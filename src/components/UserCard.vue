@@ -48,7 +48,7 @@ const snackbar = reactive({
       <v-card-actions>
         <v-tooltip location="bottom" text="Profile">
           <template v-slot:activator="{ props }">
-            <v-btn color="primary" variant="flat" block v-bind="props" :to="`//user/${user.username}`">
+            <v-btn color="primary" variant="flat" block v-bind="props" :to="`user/${user.username}`">
               Profile</v-btn>
           </template>
         </v-tooltip>
