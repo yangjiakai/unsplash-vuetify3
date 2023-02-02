@@ -49,7 +49,7 @@ const desserts = [
     <h1>This is an about page</h1>
     <h3>{{ age }}</h3>
     <v-text-field label="label" v-model="age"></v-text-field>
-    <v-btn color="success">text</v-btn>
+
     <v-card>
       <v-table>
         <thead>

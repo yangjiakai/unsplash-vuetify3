@@ -207,14 +207,13 @@ const openPhotoDialog = (id: string) => {
 
 <template>
   <div class="photo-page">
-    <!-- <v-toolbar color="primary">
+    <v-toolbar color="primary">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-text-field v-model="searchParams.query" hide-details single-line placeholder="Search photos"
-        @keyup.enter="search"></v-text-field>
+      <v-text-field v-model="searchParams.query" hide-details prepend-inner-icon="mdi-magnify" single-line
+        placeholder="Search photos" @keyup.enter="search"></v-text-field>
       <v-spacer></v-spacer>
       <v-btn color="">Go</v-btn>
-    </v-toolbar> -->
-    <v-btn color="success">text</v-btn>
+    </v-toolbar>
     <v-row>
       <v-col cols="12" xl="10">
         <v-card class="mt-2">
@@ -375,52 +374,12 @@ const openPhotoDialog = (id: string) => {
                 </v-card>
                 <v-card min-height="80vh" class="pa-5" v-else>
                   <v-row>
-                    <v-slide-group show-arrows>
-                      <v-slide-group-item v-for="item in relatedSearches" :key="item.title" v-slot="{ isSelected }">
-                        <v-btn class="ma-2" rounded :color="isSelected ? 'primary' : undefined"
-                          @click="searchRelated(item.title)">
-                          {{ item.title }}
-                        </v-btn>
-                      </v-slide-group-item>
-                    </v-slide-group>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" lg="3" md="4" sm="6" v-for="item in userData.users" :key="item.id">
-                      <v-card width="100%" class="info-card user-card d-flex flex-column justify-space-between">
-                        <div class="card-top bg-secondary-lighten-1 text-content">
-                          <v-avatar class="mr-5" size="avatarSize">
-                            <img :src="item.profile_image.small" alt="alt" />
-                          </v-avatar>
-                          <div class="flex-1">
-                            <h5>{{ item.name }}</h5>
-                            <h5>{{ item.username }}</h5>
-                          </div>
-                          <v-tooltip location="bottom" text="Add To Collection">
-                            <template v-slot:activator="{ props }">
-                              <v-btn v-bind="props" icon="mdi-plus"> </v-btn>
-                            </template>
-                          </v-tooltip>
-                        </div>
-
-                        <v-card-actions>
-                          <v-tooltip location="bottom" text="Add To Collection">
-                            <template v-slot:activator="{ props }">
-                              <v-btn color="primary" variant="flat" block v-bind="props"
-                                :to="`//user/${item.username}`">
-                                Profile</v-btn>
-                            </template>
-                          </v-tooltip>
-                        </v-card-actions>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                  <v-btn v-if="userParams.page < userData.totalPages" color="" class="gradient info mt-5" block
-                    size="large" @click="moreUsers">More Users...</v-btn>
-                  <v-row>
                     <v-col cols="12" lg="4" sm="6" v-for="item in userData.users" :key="item.id">
                       <UserCard :user="item" />
                     </v-col>
                   </v-row>
+                  <v-btn v-if="userParams.page < userData.totalPages" color="" class="gradient info mt-5" block
+                    size="large" @click="moreUsers">More Users...</v-btn>
                 </v-card>
               </v-window-item>
             </v-window>
