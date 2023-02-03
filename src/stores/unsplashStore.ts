@@ -5,6 +5,7 @@ export const useUnsplashStore = defineStore({
   id: "upsplash",
   state: () => ({
     favoriteList: ref<Photo[]>([]),
+    recentSearchList: ref<string[]>(["car", "book", "popular", "omega"]),
   }),
 
   persist: {
@@ -22,6 +23,10 @@ export const useUnsplashStore = defineStore({
       this.favoriteList = this.favoriteList.filter(
         (item) => item.id !== payload.id
       );
+    },
+
+    clearRecentSearchList() {
+      this.recentSearchList = [];
     },
   },
 });

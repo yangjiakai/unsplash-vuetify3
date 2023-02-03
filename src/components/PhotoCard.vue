@@ -4,65 +4,80 @@
 * @Description:
 -->
 <script setup lang="ts">
-import { useUnsplashStore } from '@/stores/unsplashStore'
-import type { Photo } from '@/types/unsplashTypes'
-import PhotoDetailModal from '@/views/PhotoDetailModal.vue'
+import { useUnsplashStore } from "@/stores/unsplashStore";
+import type { Photo } from "@/types/unsplashTypes";
+import PhotoDetailModal from "@/views/PhotoDetailModal.vue";
 const props = defineProps<{
-  photo: Photo
-}>()
-const unsplashStore = useUnsplashStore()
+  photo: Photo;
+}>();
+const unsplashStore = useUnsplashStore();
 const snackbar = reactive({
   isShow: false,
   timeout: 1000,
-  text: '',
-})
+  text: "",
+});
 
 const toggleLike = (photo: Photo) => {
   if (!photo.liked_by_user) {
-    snackbar.text = 'Added to your favorite'
-    snackbar.isShow = true
-    unsplashStore.addToFavorite(photo)
-    photo.likes++
+    snackbar.text = "Added to your favorite";
+    snackbar.isShow = true;
+    unsplashStore.addToFavorite(photo);
+    photo.likes++;
+  } else {
+    snackbar.text = "Removed from your favorite";
+    snackbar.isShow = true;
+    unsplashStore.removeFromFavorite(photo);
+    photo.likes--;
   }
-  else {
-    snackbar.text = 'Removed from your favorite'
-    snackbar.isShow = true
-    unsplashStore.removeFromFavorite(photo)
-    photo.likes--
-  }
-  photo.liked_by_user = !photo.liked_by_user
-}
+  photo.liked_by_user = !photo.liked_by_user;
+};
 
 const downloadPhoto = (photo: Photo) => {
-  const a = document.createElement('a')
-  a.href = `${photo.links.download}&force=true`
-  a.download = `${photo.id}.jpg`
-  a.click()
-  snackbar.text = 'Downloading now, please wait'
-  snackbar.timeout = 2000
-  snackbar.isShow = true
-  snackbar.timeout = 1000
-}
+  const a = document.createElement("a");
+  a.href = `${photo.links.download}&force=true`;
+  a.download = `${photo.id}.jpg`;
+  a.click();
+  snackbar.text = "Downloading now, please wait";
+  snackbar.timeout = 2000;
+  snackbar.isShow = true;
+  snackbar.timeout = 1000;
+};
 
-const photoDetailModal = ref(false)
+const photoDetailModal = ref(false);
 
 const openDetailModal = () => {
-  photoDetailModal.value = true
-}
+  photoDetailModal.value = true;
+};
 </script>
 
 <template>
   <div class="">
     <v-card class="shadow-1">
-      <v-img :src="photo.urls.small" height="400" cover aspect-ratio="1/2" @click="openDetailModal">
+      <v-img
+        :src="photo.urls.small"
+        height="400"
+        cover
+        aspect-ratio="1/2"
+        @click="openDetailModal"
+      >
         <v-card class="photo-card text-white">
           <div class="card-top">
             <v-spacer />
 
             <v-btn icon variant="text" @click="toggleLike(photo)">
-              <v-icon v-if="photo.liked_by_user" color="pink" icon="mdi-heart" class="heartBeat" />
+              <v-icon
+                v-if="photo.liked_by_user"
+                color="pink"
+                icon="mdi-heart"
+                class="heartBeat"
+              />
               <v-icon v-else icon="mdi-heart-outline" />
-              <v-tooltip activator="parent" location="bottom" class="" :text="photo.liked_by_user ? 'Liked' : 'Like'" />
+              <v-tooltip
+                activator="parent"
+                location="bottom"
+                class=""
+                :text="photo.liked_by_user ? 'Liked' : 'Like'"
+              />
             </v-btn>
             <v-tooltip location="bottom" text="Add To Collection">
               <template #activator="{ props }">
@@ -74,7 +89,11 @@ const openDetailModal = () => {
           <div class="card-bottom">
             <router-link :to="`user/${photo.user.username}`">
               <v-avatar class="avatar">
-                <v-img :src="photo.user.profile_image.small" :lazy-src="photo.user.profile_image.small" alt="alt" />
+                <v-img
+                  :src="photo.user.profile_image.small"
+                  :lazy-src="photo.user.profile_image.small"
+                  alt="alt"
+                />
               </v-avatar>
             </router-link>
             <router-link class="username" :to="`user/${photo.user.username}`">
@@ -83,7 +102,12 @@ const openDetailModal = () => {
 
             <v-tooltip location="bottom" text="Download">
               <template #activator="{ props }">
-                <v-btn variant="text" v-bind="props" icon="mdi-download" @click="downloadPhoto(photo)" />
+                <v-btn
+                  variant="text"
+                  v-bind="props"
+                  icon="mdi-download"
+                  @click="downloadPhoto(photo)"
+                />
               </template>
             </v-tooltip>
           </div>

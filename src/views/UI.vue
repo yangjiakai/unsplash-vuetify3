@@ -4,11 +4,13 @@
 * @Description: 
 -->
 <script setup lang="ts">
+import SearchPanel from "@/components/SearchPanel.vue";
+import SearchInput from "@/components/SearchInput.vue";
 </script>
 
 <template>
-    <div class="">
-        <v-sheet class="d-flex pa-5" height="400" elevation="1">
+  <div class="">
+    <!-- <v-sheet class="d-flex pa-5" height="400" elevation="1">
             <v-card class="mr-5" width="300" height="300" v-for="i in 10 " :elevation="i">
 
             </v-card>
@@ -27,10 +29,11 @@
 
             </v-card>
 
-        </v-sheet>
-    </div>
+        </v-sheet> -->
+    <v-sheet class="pa-5" height="500" elevation="1">
+      <SearchInput />
+    </v-sheet>
+  </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -92,8 +92,12 @@ initData();
     <v-container class="profile-container">
       <v-row>
         <v-col cols="12" md="3" class="pr-5">
-          <v-img class="mx-auto" width="200" style="border-radius: 50%"
-            :src="userProfileData.profile_image.large"></v-img>
+          <v-img
+            class="mx-auto"
+            width="200"
+            style="border-radius: 50%"
+            :src="userProfileData.profile_image.large"
+          ></v-img>
         </v-col>
         <v-col cols="12" md="9">
           <h1 class="text-h3 font-weight-bold">
@@ -109,8 +113,13 @@ initData();
 
           <p class="mb-3">Interests</p>
           <div>
-            <v-chip class="interest-chip ma-2" color="primary" label v-for="item in userProfileData.tags.aggregated"
-              :key="item.title">
+            <v-chip
+              class="interest-chip ma-2"
+              color="primary"
+              label
+              v-for="item in userProfileData.tags.aggregated"
+              :key="item.title"
+            >
               <v-icon start icon="mdi-bookmark-outline"></v-icon>
               {{ item.title }}
             </v-chip>
@@ -121,12 +130,19 @@ initData();
   </v-sheet>
 
   <v-sheet class="mt-5 shadow-1">
-    <v-tabs color="primary" v-model="tab" bg-color="transparent" sliderColor="primary">
+    <v-tabs
+      color="primary"
+      v-model="tab"
+      bg-color="transparent"
+      sliderColor="primary"
+    >
       <v-tab value="photos">
-        <v-icon class="mr-2">mdi-image</v-icon>Photos</v-tab>
+        <v-icon class="mr-2">mdi-image</v-icon>Photos</v-tab
+      >
       <v-tab value="likes"> <v-icon class="mr-2">mdi-heart</v-icon>Likes</v-tab>
       <v-tab value="collections">
-        <v-icon class="mr-2">mdi-image</v-icon>Collections</v-tab>
+        <v-icon class="mr-2">mdi-image</v-icon>Collections</v-tab
+      >
     </v-tabs>
 
     <v-card-text>
@@ -135,32 +151,66 @@ initData();
           <v-sheet v-if="userLikesData.length > 0" min-height="80vh">
             <v-row> </v-row>
           </v-sheet>
-          <v-sheet v-else min-height="80vh" class="d-flex align-center justify-center">
-            <v-img src="https://unsplash-assets.imgix.net/empty-states/photos.png" height="400"></v-img>
+          <v-sheet
+            v-else
+            min-height="80vh"
+            class="d-flex align-center justify-center"
+          >
+            <v-img
+              src="https://unsplash-assets.imgix.net/empty-states/photos.png"
+              height="400"
+            ></v-img>
           </v-sheet>
         </v-window-item>
         <v-window-item value="likes">
           <v-sheet v-if="userLikesData.length > 0" min-height="80vh">
             <v-row>
-              <v-col cols="12" sm="6" md="4" lg="3" v-for="photo in userLikesData" :key="photo.id">
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+                v-for="photo in userLikesData"
+                :key="photo.id"
+              >
                 <PhotoCard :photo="photo"></PhotoCard>
               </v-col>
             </v-row>
           </v-sheet>
-          <v-sheet v-else min-height="80vh" class="d-flex align-center justify-center">
-            <v-img src="https://unsplash-assets.imgix.net/empty-states/photos.png" height="400"></v-img>
+          <v-sheet
+            v-else
+            min-height="80vh"
+            class="d-flex align-center justify-center"
+          >
+            <v-img
+              src="https://unsplash-assets.imgix.net/empty-states/photos.png"
+              height="400"
+            ></v-img>
           </v-sheet>
         </v-window-item>
         <v-window-item value="collections" class="pa-1">
           <v-sheet v-if="userCollectionsData.length > 0" min-height="80vh">
             <v-row>
-              <v-col cols="12" sm="6" lg="4" v-for="collection in userCollectionsData" :key="collection.id">
+              <v-col
+                cols="12"
+                sm="6"
+                lg="4"
+                v-for="collection in userCollectionsData"
+                :key="collection.id"
+              >
                 <CollectionCard :collection="collection"></CollectionCard>
               </v-col>
             </v-row>
           </v-sheet>
-          <v-sheet v-else min-height="80vh" class="d-flex align-center justify-center">
-            <v-img src="https://unsplash-assets.imgix.net/empty-states/photos.png" height="400"></v-img>
+          <v-sheet
+            v-else
+            min-height="80vh"
+            class="d-flex align-center justify-center"
+          >
+            <v-img
+              src="https://unsplash-assets.imgix.net/empty-states/photos.png"
+              height="400"
+            ></v-img>
           </v-sheet>
         </v-window-item>
       </v-window>

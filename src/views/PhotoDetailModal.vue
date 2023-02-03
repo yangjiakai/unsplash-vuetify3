@@ -109,7 +109,13 @@ initData();
     <v-divider></v-divider>
 
     <v-card-text class="scrollbar-beautify pa-0">
-      <v-img class="mx-auto" width="1080" contain :src="photo.urls.regular" :lazy-src="photo.urls.regular"></v-img>
+      <v-img
+        class="mx-auto"
+        width="1080"
+        contain
+        :src="photo.urls.regular"
+        :lazy-src="photo.urls.regular"
+      ></v-img>
       <v-divider></v-divider>
       <div class="related-photos pa-3">
         <v-sheet v-if="relatedPhotos.length > 0" min-height="80vh">
@@ -145,20 +151,37 @@ initData();
           </div>
           <h4 class="text-h6 font-weight-bold py-3">Related Photos</h4>
           <v-row>
-            <v-col col="12" md="4" lg="3" v-for="relatedPhoto in relatedPhotos" :key="relatedPhoto.id">
+            <v-col
+              col="12"
+              md="4"
+              lg="3"
+              v-for="relatedPhoto in relatedPhotos"
+              :key="relatedPhoto.id"
+            >
               <PhotoCard :photo="relatedPhoto"></PhotoCard>
             </v-col>
           </v-row>
 
           <h4 class="text-h6 font-weight-bold py-3">Related Collections</h4>
           <v-row>
-            <v-col cols="12" md="4" v-for="collection in photo.related_collections.results" :key="collection.id">
+            <v-col
+              cols="12"
+              md="4"
+              v-for="collection in photo.related_collections.results"
+              :key="collection.id"
+            >
               <CollectionCard :collection="collection"></CollectionCard>
             </v-col>
           </v-row>
           <h4 class="text-h6 font-weight-bold py-3">Related tags</h4>
           <v-card class="shadow-1 mb-3">
-            <v-chip class="interest-chip ma-2" color="primary" label v-for="tag in photo.tags" :key="tag.title">
+            <v-chip
+              class="interest-chip ma-2"
+              color="primary"
+              label
+              v-for="tag in photo.tags"
+              :key="tag.title"
+            >
               <v-icon start icon="mdi-bookmark-outline"></v-icon>
               {{ tag.title }}
             </v-chip>
