@@ -214,7 +214,7 @@ const openPhotoDialog = (id: string) => {
       <v-spacer></v-spacer>
       <v-btn color="">Go</v-btn>
     </v-toolbar>
-    <v-row>
+    <v-row class="pa-3">
       <v-col cols="12" xl="10">
         <v-card class="mt-2">
           <v-tabs v-model="tab" bg-color="primary">
@@ -304,6 +304,26 @@ const openPhotoDialog = (id: string) => {
                   </v-row>
                   <v-btn v-if="photoParams.page < photoData.totalPages" color="" class="gradient info mt-5" block
                     size="large" @click="morePhotos">More Photos...</v-btn>
+                  <v-sheet class="d-flex pa-5" height="400" elevation="1">
+                    <v-card class="mr-5" width="300" height="300" v-for="i in 10 " :elevation="i">
+
+                    </v-card>
+                  </v-sheet>
+                  <v-sheet class="d-flex pa-5" height="300" elevation="1">
+                    <v-card class="shadow-md mr-5" width="200" height="200">
+
+                    </v-card>
+                    <v-card class="shadow-lg mr-5" width="200" height="200">
+
+                    </v-card>
+                    <v-card class="shadow-xl mr-5" width="200" height="200">
+
+                    </v-card>
+                    <v-card class="shadow-inner mr-5" width="200" height="200">
+
+                    </v-card>
+
+                  </v-sheet>
                 </v-card>
               </v-window-item>
 

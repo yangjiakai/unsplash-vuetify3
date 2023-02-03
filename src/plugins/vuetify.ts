@@ -61,7 +61,7 @@ export default createVuetify({
     },
     VCard: {
       flat: true,
-      elevation: 10,
+      elevation: 1,
     },
   },
 });
