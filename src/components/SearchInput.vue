@@ -5,14 +5,15 @@
 -->
 <script setup lang="ts">
 import { BASE_URL, config } from "../config/unsplashConfig";
-import SearchPanel from "./SearchPanel.vue";
-
+import { useFocusWithin } from "@vueuse/core";
+import { useUnsplashStore } from "../stores/unsplashStore";
 const loading = ref(false);
-const detailShow = ref(false);
+const searchPanelShow = ref(false);
 const select = ref();
 const search = ref("");
 const selectList = ref<string[]>([]);
 const selectResponse = ref();
+
 const states = ref([
   "Alabama",
   "Alaska",
@@ -79,42 +80,76 @@ const photoStatisticsUrl = computed(() => {
   return `${BASE_URL}topics/${search.value}`;
 });
 
+// 监听检索关键词变化，为空时相似关键词列表清空，且显示检索面板，否则显示关键词列表
 watch(search, (val) => {
   if (val) {
-    detailShow.value = false;
+    searchPanelShow.value = false;
     if (val !== select.value) {
       querySelections(val);
+    } else {
+      setTimeout(() => {
+        selectList.value = [];
+      }, 300);
     }
   } else {
-    detailShow.value = true;
-    selectList.value = [];
+    setTimeout(() => {
+      selectList.value = [];
+    }, 300);
+    setTimeout(() => {
+      searchPanelShow.value = true;
+    }, 500);
   }
 });
 
+// 根据检索关键词过滤查询类似关键词列表
 const querySelections = (key: string) => {
   loading.value = true;
   setTimeout(() => {
     selectList.value = states.value.filter(
       (item) => item.toLowerCase().indexOf(key) > -1
     );
-  }, 500);
+  }, 300);
   loading.value = false;
 };
 
-const env = () => {
-  if (!search.value) {
-    detailShow.value = true;
+// 检索面板显示条件：1.当前焦点在检索框或者检索面板上 2.检索框为空
+const refSearchInput = ref();
+const refSearchPanel = ref();
+const searchInputFocus = useFocusWithin(refSearchInput);
+const searchPanelFocus = useFocusWithin(refSearchPanel);
+
+watch(
+  [searchInputFocus.focused, searchPanelFocus.focused],
+  ([searchInputFocued, searchPanelFocused]) => {
+    console.log(searchInputFocued, searchPanelFocused);
+
+    if ((searchInputFocued || searchPanelFocused) && !search.value) {
+      searchPanelShow.value = true;
+    } else {
+      searchPanelShow.value = false;
+    }
   }
-};
+);
+
+// 检索面板内容
+const unsplashStore = useUnsplashStore();
+
+// Trending Searches
+const trendingSearches = ref(["car", "book", "popular", "omega"]);
+
+// Trending Topics
+const trendingTopics = ref(["Film", "WallPapers", "Health", "Spirit"]);
+
+// Trending Collecitons
+const trendingCollections = ref(["Yoga", "Season", "Luxury", "Universe"]);
 </script>
 
 <template>
   <v-toolbar color="primary" class="main-toobar px-2">
     <v-card width="1000" class="search-container">
       <v-autocomplete
+        ref="refSearchInput"
         class="main-search"
-        @focus="env"
-        @blur="detailShow = false"
         v-model="select"
         v-model:search="search"
         :items="selectList"
@@ -126,8 +161,62 @@ const env = () => {
       >
       </v-autocomplete>
 
-      <div v-show="detailShow" class="panel">
-        <SearchPanel />
+      <div ref="refSearchPanel" v-show="searchPanelShow" class="panel">
+        <v-sheet style="border-radius: 5px" elevation="5" class="py-10 px-3">
+          <div>
+            <p class="my-5">
+              Recent Searches
+              <v-btn
+                class="ml-2"
+                variant="text"
+                color="primary"
+                @click="unsplashStore.clearRecentSearchList()"
+                >Clear</v-btn
+              >
+            </p>
+            <p v-if="unsplashStore.recentSearchList.length > 0">
+              <v-btn
+                class="mr-5"
+                v-for="item in unsplashStore.recentSearchList"
+                variant="outlined"
+                >blue</v-btn
+              >
+            </p>
+          </div>
+          <div>
+            <p class="my-5">Trending Searches</p>
+            <p>
+              <v-btn
+                class="mr-5"
+                v-for="item in trendingSearches"
+                variant="outlined"
+                >{{ item }}</v-btn
+              >
+            </p>
+          </div>
+          <div>
+            <p class="my-5">Trending Topics</p>
+            <p>
+              <v-btn
+                class="mr-5"
+                v-for="item in trendingSearches"
+                variant="outlined"
+                >{{ item }}</v-btn
+              >
+            </p>
+          </div>
+          <div>
+            <p class="my-5">Trending Collecitons</p>
+            <p>
+              <v-btn
+                class="mr-5"
+                v-for="item in trendingSearches"
+                variant="outlined"
+                >{{ item }}</v-btn
+              >
+            </p>
+          </div>
+        </v-sheet>
       </div>
     </v-card>
   </v-toolbar>
