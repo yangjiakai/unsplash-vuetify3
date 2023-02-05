@@ -205,7 +205,7 @@ const openPhotoDialog = (id: string) => {
 
 <template>
   <div class="photo-page">
-    <v-toolbar color="primary">
+    <!-- <v-toolbar color="primary">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-text-field
         v-model="searchParams.query"
@@ -217,7 +217,7 @@ const openPhotoDialog = (id: string) => {
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-btn color="">Go</v-btn>
-    </v-toolbar>
+    </v-toolbar> -->
     <v-row class="pa-3">
       <v-col cols="12" xl="10">
         <v-card class="mt-2">

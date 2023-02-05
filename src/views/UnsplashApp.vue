@@ -7,11 +7,11 @@
 
 <template>
   <div>
-    <router-view v-slot="{ Component }" class="gp">
+    <!-- <router-view v-slot="{ Component }">
       <transition name="fade">
         <component :is="Component" />
       </transition>
-    </router-view>
+    </router-view> -->
   </div>
 </template>
 

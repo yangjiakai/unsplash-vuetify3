@@ -4,7 +4,7 @@
 * @Description: 
 -->
 <script setup lang="ts">
-import SearchPanel from "@/components/SearchPanel.vue";
+// import SearchPanel from "@/components/SearchPanel.vue";
 import SearchInput from "@/components/SearchInput.vue";
 </script>
 
@@ -31,7 +31,9 @@ import SearchInput from "@/components/SearchInput.vue";
 
         </v-sheet> -->
     <v-sheet class="pa-5" height="500" elevation="1">
-      <SearchInput />
+      <v-toolbar color="primary">
+        <SearchInput />
+      </v-toolbar>
     </v-sheet>
   </div>
 </template>

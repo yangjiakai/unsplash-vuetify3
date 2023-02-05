@@ -7,6 +7,7 @@
 import { BASE_URL, config } from "../config/unsplashConfig";
 import { useFocusWithin } from "@vueuse/core";
 import { useUnsplashStore } from "../stores/unsplashStore";
+import SearchPanel from "../components/SearchPanel.vue";
 const loading = ref(false);
 const searchPanelShow = ref(false);
 const select = ref();
@@ -130,110 +131,87 @@ watch(
     }
   }
 );
-
-// 检索面板内容
-const unsplashStore = useUnsplashStore();
-
-// Trending Searches
-const trendingSearches = ref(["car", "book", "popular", "omega"]);
-
-// Trending Topics
-const trendingTopics = ref(["Film", "WallPapers", "Health", "Spirit"]);
-
-// Trending Collecitons
-const trendingCollections = ref(["Yoga", "Season", "Luxury", "Universe"]);
 </script>
 
 <template>
-  <v-toolbar color="primary" class="main-toobar px-2">
-    <v-card width="1000" class="search-container">
-      <v-autocomplete
-        ref="refSearchInput"
-        class="main-search"
-        v-model="select"
-        v-model:search="search"
-        :items="selectList"
-        :loading="loading"
-        density="comfortable"
-        hide-no-data
-        hide-details
-        label="Keyword"
-      >
-      </v-autocomplete>
+  <v-card width="1000" class="search-container">
+    <v-autocomplete
+      color="info"
+      elevation="1"
+      ref="refSearchInput"
+      class="main-search"
+      v-model="select"
+      v-model:search="search"
+      :items="selectList"
+      :loading="loading"
+      density="comfortable"
+      hide-details
+      label="Keyword"
+    >
+      <template v-slot:no-data>
+        <!-- <v-btn color="success">text</v-btn> -->
+        <SearchPanel />
+      </template>
+    </v-autocomplete>
 
-      <div ref="refSearchPanel" v-show="searchPanelShow" class="panel">
-        <v-sheet style="border-radius: 5px" elevation="5" class="py-10 px-3">
-          <div>
-            <p class="my-5">
-              Recent Searches
-              <v-btn
-                class="ml-2"
-                variant="text"
-                color="primary"
-                @click="unsplashStore.clearRecentSearchList()"
-                >Clear</v-btn
-              >
-            </p>
-            <p v-if="unsplashStore.recentSearchList.length > 0">
-              <v-btn
-                class="mr-5"
-                v-for="item in unsplashStore.recentSearchList"
-                variant="outlined"
-                >blue</v-btn
-              >
-            </p>
-          </div>
-          <div>
-            <p class="my-5">Trending Searches</p>
-            <p>
-              <v-btn
-                class="mr-5"
-                v-for="item in trendingSearches"
-                variant="outlined"
-                >{{ item }}</v-btn
-              >
-            </p>
-          </div>
-          <div>
-            <p class="my-5">Trending Topics</p>
-            <p>
-              <v-btn
-                class="mr-5"
-                v-for="item in trendingSearches"
-                variant="outlined"
-                >{{ item }}</v-btn
-              >
-            </p>
-          </div>
-          <div>
-            <p class="my-5">Trending Collecitons</p>
-            <p>
-              <v-btn
-                class="mr-5"
-                v-for="item in trendingSearches"
-                variant="outlined"
-                >{{ item }}</v-btn
-              >
-            </p>
-          </div>
-        </v-sheet>
-      </div>
-    </v-card>
-  </v-toolbar>
+    <div ref="refSearchPanel" v-show="searchPanelShow" class="panel">
+      <!-- <v-sheet style="border-radius: 5px" elevation="5" class="py-10 px-3">
+        <div>
+          <p class="my-2">
+            Recent Searches
+            <v-btn
+              class="ml-2"
+              variant="text"
+              color="primary"
+              @click="unsplashStore.clearRecentSearchList()"
+              >Clear</v-btn
+            >
+          </p>
+          <p v-if="unsplashStore.recentSearchList.length > 0">
+            <v-btn
+              class="mr-5"
+              v-for="item in unsplashStore.recentSearchList"
+              variant="outlined"
+              >blue</v-btn
+            >
+          </p>
+        </div>
+        <div>
+          <p class="my-5">Trending Searches</p>
+          <p>
+            <v-btn
+              class="mr-5"
+              v-for="item in trendingSearches"
+              variant="outlined"
+              >{{ item }}</v-btn
+            >
+          </p>
+        </div>
+        <div>
+          <p class="my-5">Trending Topics</p>
+          <p>
+            <v-btn
+              class="mr-5"
+              v-for="item in trendingSearches"
+              variant="outlined"
+              >{{ item }}</v-btn
+            >
+          </p>
+        </div>
+        <div>
+          <p class="my-5">Trending Collecitons</p>
+          <p>
+            <v-btn
+              class="mr-5"
+              v-for="item in trendingSearches"
+              variant="outlined"
+              >{{ item }}</v-btn
+            >
+          </p>
+        </div>
+      </v-sheet> -->
+    </div>
+  </v-card>
 </template>
 
-<style scoped lang="scss">
-.main-toobar {
-  overflow: visible;
-}
-
-.search-container {
-  position: relative;
-  overflow: visible;
-
-  .panel {
-    position: absolute;
-    width: 1000px;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
