@@ -83,3 +83,22 @@ export interface ChartData {
   date: string;
   value: string;
 }
+
+export interface Topic {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  published_at: Date;
+  updated_at: Date;
+  starts_at: Date;
+  visibility: string;
+  featured: boolean;
+  total_photos: number;
+  current_user_contributions: any[];
+  links: any;
+  status: string;
+  owners: any[];
+  cover_photo: Photo;
+  preview_photos: any[];
+}
