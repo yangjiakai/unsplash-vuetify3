@@ -9,49 +9,101 @@ const router = createRouter({
       component: () =>
         import(/* webpackChunkName: "unsplash-ui" */ "@/views/UI.vue"),
     },
-
     {
-      path: "/",
+      path: "",
+      // redirect: "photos",
+      component: () =>
+        import(
+          /* webpackChunkName: "unsplash-photos" */ "@/views/PhotosPage.vue"
+        ),
+    },
+    {
+      path: "/user/:username",
+      name: "unsplash-user",
+      component: () =>
+        import(/* webpackChunkName: "unsplash-user" */ "@/views/UserPage.vue"),
+    },
+    {
+      path: "/collection/:id",
+      name: "unsplash-collection",
+      component: () =>
+        import(
+          /* webpackChunkName: "unsplash-collection" */ "@/views/CollectionPage.vue"
+        ),
+    },
+    {
+      path: "/topic/:slug",
+      name: "unsplash-topic",
+      component: () =>
+        import(
+          /* webpackChunkName: "unsplash-topic" */ "@/views/TopicPage.vue"
+        ),
+    },
+    {
+      path: "/my-page",
+      name: "unsplash-my-page",
+      component: () =>
+        import(/* webpackChunkName: "unsplash-my-page" */ "@/views/MyPage.vue"),
+    },
+    {
+      path: "/home",
+      name: "unsplash",
       component: () =>
         import(
           /* webpackChunkName: "app-unsplash" */ "@/views/UnsplashApp.vue"
         ),
-
-      children: [
-        {
-          path: "",
-          // redirect: "photos",
-          component: () =>
-            import(
-              /* webpackChunkName: "unsplash-photos" */ "@/views/PhotosPage.vue"
-            ),
-        },
-        {
-          path: "user/:username",
-          name: "unsplash-user",
-          component: () =>
-            import(
-              /* webpackChunkName: "unsplash-user" */ "@/views/UserPage.vue"
-            ),
-        },
-        {
-          path: "collection/:id",
-          name: "unsplash-collection",
-          component: () =>
-            import(
-              /* webpackChunkName: "unsplash-collection" */ "@/views/CollectionPage.vue"
-            ),
-        },
-        {
-          path: "my-page",
-          name: "unsplash-my-page",
-          component: () =>
-            import(
-              /* webpackChunkName: "unsplash-my-page" */ "@/views/MyPage.vue"
-            ),
-        },
-      ],
     },
+
+    // {
+    //   path: "/",
+    //   component: () =>
+    //     import(
+    //       /* webpackChunkName: "app-unsplash" */ "@/views/UnsplashApp.vue"
+    //     ),
+
+    //   children: [
+    //     {
+    //       path: "",
+    //       // redirect: "photos",
+    //       component: () =>
+    //         import(
+    //           /* webpackChunkName: "unsplash-photos" */ "@/views/PhotosPage.vue"
+    //         ),
+    //     },
+    //     {
+    //       path: "user/:username",
+    //       name: "unsplash-user",
+    //       component: () =>
+    //         import(
+    //           /* webpackChunkName: "unsplash-user" */ "@/views/UserPage.vue"
+    //         ),
+    //     },
+    //     {
+    //       path: "collection/:id",
+    //       name: "unsplash-collection",
+    //       component: () =>
+    //         import(
+    //           /* webpackChunkName: "unsplash-collection" */ "@/views/CollectionPage.vue"
+    //         ),
+    //     },
+    //     {
+    //       path: "topic/:slug",
+    //       name: "unsplash-topic",
+    //       component: () =>
+    //         import(
+    //           /* webpackChunkName: "unsplash-topic" */ "@/views/TopicPage.vue"
+    //         ),
+    //     },
+    //     {
+    //       path: "my-page",
+    //       name: "unsplash-my-page",
+    //       component: () =>
+    //         import(
+    //           /* webpackChunkName: "unsplash-my-page" */ "@/views/MyPage.vue"
+    //         ),
+    //     },
+    //   ],
+    // },
   ],
 });
 

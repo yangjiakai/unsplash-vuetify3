@@ -5,7 +5,8 @@ const photosUrl = BASE_URL + "photos";
 
 // Photo
 export const getPhotosApi = () => {
-  return axios.get(photosUrl, config);
+  const url = photosUrl + "?per_page=30";
+  return axios.get(url, config);
 };
 
 export const getAPhotoApi = (id: string) => {
@@ -28,12 +29,12 @@ export const getTopicsApi = () => {
   return axios.get(topicsUrl, config);
 };
 
-export const getATopicApi = (id_or_slug: string) => {
+export const getATopicApi = (id_or_slug: string | string[]) => {
   const url = topicsUrl + "/" + id_or_slug;
   return axios.get(url, config);
 };
 
-export const getTopicPhotosApi = (id_or_slug: string) => {
-  const url = topicsUrl + "/" + id_or_slug + "/photos";
+export const getTopicPhotosApi = (id_or_slug: string | string[]) => {
+  const url = topicsUrl + "/" + id_or_slug + "/photos?per_page=30";
   return axios.get(url, config);
 };
