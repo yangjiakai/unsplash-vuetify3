@@ -7,6 +7,12 @@
 import FavoriteCard from "@/components/FavoriteCard.vue";
 import PhotoDetail from "./PhotoDetailModal.vue";
 import UserCard from "@/components/UserCard.vue";
+import {
+  searchAllApi,
+  searchPhotosApi,
+  searchCollectionsApi,
+  searchUsersApi,
+} from "@/api/unsplashApi";
 import { Icon, listIcons } from "@iconify/vue";
 import type { Photo, Collection, User } from "@/types/unsplashTypes";
 
@@ -85,38 +91,16 @@ const userData: UserData = reactive({
   total: 0,
   totalPages: 0,
 });
-
+const currentKeyword = ref("");
+const currentUserPage = ref(1);
+const currentPhotoPage = ref(1);
+const currentCollectionPage = ref(1);
 const relatedSearches = ref<any[]>([]);
 
 const tab = ref(null);
 
-const search = async () => {
-  const response = await axios.get(
-    `${searchParams.url}page=${searchParams.page}&per_page=${searchParams.perPage}&query=${searchParams.query}`,
-    config
-  );
-
-  // Photos
-  photoData.photos = response.data.photos.results;
-  photoData.total = response.data.photos.total;
-  photoData.totalPages = response.data.photos.total_pages;
-
-  // Collections
-  collectionData.collections = response.data.collections.results;
-  collectionData.total = response.data.collections.total;
-  collectionData.totalPages = response.data.collections.total_pages;
-
-  // Users
-  userData.users = response.data.users.results;
-  userData.total = response.data.users.total;
-  userData.totalPages = response.data.users.total_pages;
-
-  // RelatedSearches
-  relatedSearches.value = response.data.related_searches;
-  initData();
-};
-
 const updateView = (data: any) => {
+  currentKeyword.value = data.meta.keyword;
   // Photos
   photoData.photos = data.photos.results;
   photoData.total = data.photos.total;
@@ -138,7 +122,7 @@ const updateView = (data: any) => {
 };
 
 onMounted(() => {
-  search();
+  updateView(unsplashStore.searchResult);
 });
 
 watch(
@@ -157,38 +141,46 @@ const initData = () => {
 };
 
 const morePhotos = async () => {
-  photoParams.page++;
-  const response = await axios.get(
-    `${photoParams.url}page=${photoParams.page}&per_page=${photoParams.perPage}&query=${photoParams.query}`,
-    config
-  );
+  currentPhotoPage.value++;
+  const params = {
+    query: currentKeyword.value,
+    per_page: 30,
+    page: currentPhotoPage.value,
+  };
+  const response = await searchPhotosApi(params);
   photoData.photos.push(...response.data.results);
 };
 
 const moreCollections = async () => {
-  collectionParams.page++;
-  const response = await axios.get(
-    `${collectionParams.url}page=${collectionParams.page}&per_page=${collectionParams.perPage}&query=${collectionParams.query}`,
-    config
-  );
+  currentCollectionPage.value++;
+  const params = {
+    query: currentKeyword.value,
+    per_page: 30,
+    page: currentCollectionPage.value,
+  };
+  const response = await searchCollectionsApi(params);
   collectionData.collections.push(...response.data.results);
 };
 
 const moreUsers = async () => {
-  userParams.page++;
-  const response = await axios.get(
-    `${userParams.url}page=${userParams.page}&per_page=${userParams.perPage}&query=${userParams.query}`,
-    config
-  );
+  currentUserPage.value++;
+  const params = {
+    query: currentKeyword.value,
+    per_page: 30,
+    page: currentUserPage.value,
+  };
+  const response = await searchUsersApi(params);
   userData.users.push(...response.data.results);
 };
 
-const searchRelated = (query: string) => {
-  searchParams.query = query;
-  photoParams.query = query;
-  collectionParams.query = query;
-  userParams.query = query;
-  search();
+const searchRelated = async (query: string) => {
+  const params = {
+    query: query,
+    per_page: 30,
+    page: 1,
+  };
+  const topicsResponse = await searchAllApi(params);
+  unsplashStore.searchResult = topicsResponse.data;
 };
 
 const snackbar = reactive({
@@ -249,9 +241,6 @@ const openPhotoDialog = (id: string) => {
     <v-row class="pa-3">
       <v-col cols="12" xl="10">
         <v-card class="mt-2">
-          <div v-if="unsplashStore.searchResult">
-            {{ unsplashStore.searchResult.collections.total }}
-          </div>
           <v-tabs v-model="tab" bg-color="primary">
             <v-tab value="photos"
               ><v-icon class="mr-2">mdi-image-outline</v-icon> photos

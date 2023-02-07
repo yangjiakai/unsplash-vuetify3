@@ -8,7 +8,7 @@ import { BASE_URL, config } from "../config/unsplashConfig";
 import { useFocusWithin } from "@vueuse/core";
 import { useUnsplashStore } from "../stores/unsplashStore";
 import SearchPanel from "../components/SearchPanel.vue";
-import { searchPhotosApi } from "@/api/unsplashApi";
+import { searchAllApi } from "@/api/unsplashApi";
 const unsplashStore = useUnsplashStore();
 const router = useRouter();
 const route = useRouter();
@@ -143,7 +143,7 @@ const search = async () => {
     page: 1,
   };
 
-  const topicsResponse = await searchPhotosApi(params);
+  const topicsResponse = await searchAllApi(params);
   unsplashStore.searchResult = topicsResponse.data;
 
   if (route.currentRoute.value.name !== "unsplash-search") {

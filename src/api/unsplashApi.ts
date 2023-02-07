@@ -57,8 +57,29 @@ interface SearchParams {
   page?: number;
 }
 
-export const searchPhotosApi = (searchParams: SearchParams) => {
+export const searchAllApi = (searchParams: SearchParams) => {
   return axios.get(BASE_URL + "search?", {
+    headers: config.headers,
+    params: searchParams,
+  });
+};
+
+export const searchPhotosApi = (searchParams: SearchParams) => {
+  return axios.get(BASE_URL + "search/photos?", {
+    headers: config.headers,
+    params: searchParams,
+  });
+};
+
+export const searchCollectionsApi = (searchParams: SearchParams) => {
+  return axios.get(BASE_URL + "search/collections?", {
+    headers: config.headers,
+    params: searchParams,
+  });
+};
+
+export const searchUsersApi = (searchParams: SearchParams) => {
+  return axios.get(BASE_URL + "search/users?", {
     headers: config.headers,
     params: searchParams,
   });
