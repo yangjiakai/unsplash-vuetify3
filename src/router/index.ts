@@ -10,11 +10,15 @@ const router = createRouter({
         import(/* webpackChunkName: "unsplash-ui" */ "@/views/UI.vue"),
     },
     {
-      path: "",
-      // redirect: "photos",
+      path: "/",
+      redirect: "/home",
+    },
+    {
+      path: "/search",
+      name: "unsplash-search",
       component: () =>
         import(
-          /* webpackChunkName: "unsplash-photos" */ "@/views/PhotosPage.vue"
+          /* webpackChunkName: "unsplash-photos" */ "@/views/SearchPage.vue"
         ),
     },
     {

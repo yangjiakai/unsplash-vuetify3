@@ -8,10 +8,14 @@ import { BASE_URL, config } from "../config/unsplashConfig";
 import { useFocusWithin } from "@vueuse/core";
 import { useUnsplashStore } from "../stores/unsplashStore";
 import SearchPanel from "../components/SearchPanel.vue";
+import { searchPhotosApi } from "@/api/unsplashApi";
+const unsplashStore = useUnsplashStore();
+const router = useRouter();
+const route = useRouter();
 const loading = ref(false);
 const searchPanelShow = ref(false);
 const select = ref();
-const search = ref("");
+const searchKey = ref("");
 const selectList = ref<string[]>([]);
 const selectResponse = ref();
 
@@ -78,11 +82,11 @@ const states = ref([
 ]);
 
 const photoStatisticsUrl = computed(() => {
-  return `${BASE_URL}topics/${search.value}`;
+  return `${BASE_URL}topics/${searchKey.value}`;
 });
 
 // 监听检索关键词变化，为空时相似关键词列表清空，且显示检索面板，否则显示关键词列表
-watch(search, (val) => {
+watch(searchKey, (val) => {
   if (val) {
     searchPanelShow.value = false;
     if (val !== select.value) {
@@ -124,13 +128,30 @@ watch(
   ([searchInputFocued, searchPanelFocused]) => {
     console.log(searchInputFocued, searchPanelFocused);
 
-    if ((searchInputFocued || searchPanelFocused) && !search.value) {
+    if ((searchInputFocued || searchPanelFocused) && !searchKey.value) {
       searchPanelShow.value = true;
     } else {
       searchPanelShow.value = false;
     }
   }
 );
+
+const search = async () => {
+  const params = {
+    query: searchKey.value,
+    per_page: 30,
+    page: 1,
+  };
+
+  const topicsResponse = await searchPhotosApi(params);
+  unsplashStore.searchResult = topicsResponse.data;
+
+  if (route.currentRoute.value.name !== "unsplash-search") {
+    router.push({
+      name: "unsplash-search",
+    });
+  }
+};
 </script>
 
 <template>
@@ -141,12 +162,13 @@ watch(
       ref="refSearchInput"
       class="main-search"
       v-model="select"
-      v-model:search="search"
+      v-model:search="searchKey"
       :items="selectList"
       :loading="loading"
       density="comfortable"
       hide-details
       label="Keyword"
+      @keyup.enter="search"
     >
       <template v-slot:no-data>
         <!-- <v-btn color="success">text</v-btn> -->

@@ -116,9 +116,37 @@ const search = async () => {
   initData();
 };
 
+const updateView = (data: any) => {
+  // Photos
+  photoData.photos = data.photos.results;
+  photoData.total = data.photos.total;
+  photoData.totalPages = data.photos.total_pages;
+
+  // Collections
+  collectionData.collections = data.collections.results;
+  collectionData.total = data.collections.total;
+  collectionData.totalPages = data.collections.total_pages;
+
+  // Users
+  userData.users = data.users.results;
+  userData.total = data.users.total;
+  userData.totalPages = data.users.total_pages;
+
+  // RelatedSearches
+  relatedSearches.value = data.related_searches;
+  initData();
+};
+
 onMounted(() => {
   search();
 });
+
+watch(
+  () => unsplashStore.searchResult,
+  (newVal) => {
+    updateView(newVal);
+  }
+);
 
 const initData = () => {
   photoData.photos.forEach((photo) => {
@@ -221,6 +249,9 @@ const openPhotoDialog = (id: string) => {
     <v-row class="pa-3">
       <v-col cols="12" xl="10">
         <v-card class="mt-2">
+          <div v-if="unsplashStore.searchResult">
+            {{ unsplashStore.searchResult.collections.total }}
+          </div>
           <v-tabs v-model="tab" bg-color="primary">
             <v-tab value="photos"
               ><v-icon class="mr-2">mdi-image-outline</v-icon> photos

@@ -6,11 +6,14 @@ export const useUnsplashStore = defineStore({
   state: () => ({
     favoriteList: ref<Photo[]>([]),
     recentSearchList: ref<string[]>(["car", "book", "popular", "omega"]),
+    searchResult: ref(),
   }),
 
   persist: {
     enabled: true,
-    strategies: [{ storage: localStorage, paths: ["favoriteList"] }],
+    strategies: [
+      { storage: localStorage, paths: ["favoriteList", "searchResult"] },
+    ],
   },
 
   getters: {},
