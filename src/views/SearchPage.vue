@@ -55,14 +55,18 @@ const userData: UserData = reactive({
   total: 0,
   totalPages: 0,
 });
+
+// 当前的检索关键词
 const currentKeyword = ref("");
+// 当前UserTab已加载页数
 const currentUserPage = ref(1);
+// 当前PhotoTab已加载页数
 const currentPhotoPage = ref(1);
+// 当前CollctionTab已加载页数
 const currentCollectionPage = ref(1);
+// 存放相关检索列表
 const relatedSearches = ref<any[]>([]);
-
-const currentTabKey = ref("photos");
-
+// 当前Tab
 const tab = ref(null);
 
 const updateView = (data: any) => {
@@ -84,13 +88,30 @@ const updateView = (data: any) => {
 
   // RelatedSearches
   relatedSearches.value = data.related_searches;
-  initData();
+  updateLikesView();
 };
 
+// 初期显示可以显示上次的检索结果
 onMounted(() => {
   updateView(unsplashStore.searchResult);
   // window.addEventListener("scroll", onReachBottom);
 });
+
+// 监听检索结果，并更新师徒
+watch(
+  () => unsplashStore.searchResult,
+  (newVal) => {
+    updateView(newVal);
+  }
+);
+
+const updateLikesView = () => {
+  photoData.photos.forEach((photo) => {
+    photo.liked_by_user = unsplashStore.favoriteList.some(
+      (item) => item.id === photo.id
+    );
+  });
+};
 
 // 触底加载更多图片
 const onReachBottom = () => {
@@ -105,7 +126,7 @@ const onReachBottom = () => {
 
     // 只有在列表未在请求中，并且有剩余数据可请求，并且触底的情况下，才能发起请求
     if (
-      currentTabKey.value === "photos" &&
+      tab.value === "photos" &&
       currentPhotoPage.value < photoData.totalPages
     ) {
       // 获取更多照片
@@ -114,21 +135,9 @@ const onReachBottom = () => {
   }
 };
 
-watch(
-  () => unsplashStore.searchResult,
-  (newVal) => {
-    updateView(newVal);
-  }
-);
-
-const initData = () => {
-  photoData.photos.forEach((photo) => {
-    photo.liked_by_user = unsplashStore.favoriteList.some(
-      (item) => item.id === photo.id
-    );
-  });
-};
-
+/**
+ * 在Photo的Tab页加载更多照片
+ */
 const morePhotos = async () => {
   currentPhotoPage.value++;
   const params = {
@@ -140,6 +149,9 @@ const morePhotos = async () => {
   photoData.photos.push(...response.data.results);
 };
 
+/**
+ * 在Collection的Tab页加载更多合集
+ */
 const moreCollections = async () => {
   currentCollectionPage.value++;
   const params = {
@@ -151,6 +163,9 @@ const moreCollections = async () => {
   collectionData.collections.push(...response.data.results);
 };
 
+/**
+ * 在User的Tab页加载更多用户信息
+ */
 const moreUsers = async () => {
   currentUserPage.value++;
   const params = {
@@ -162,6 +177,10 @@ const moreUsers = async () => {
   userData.users.push(...response.data.results);
 };
 
+/**
+ * 当点击页面的关系关键词时，进行检索
+ * @param query 检索关键词
+ */
 const searchRelated = async (query: string) => {
   const params = {
     query: query,
@@ -178,6 +197,10 @@ const snackbar = reactive({
   text: "",
 });
 
+/**
+ * 照片加入或者移出本地收藏
+ * @param Photo 照片对象
+ */
 const toggleLike = (photo: Photo) => {
   if (!photo.liked_by_user) {
     snackbar.text = "Added to your favorite";
@@ -193,6 +216,10 @@ const toggleLike = (photo: Photo) => {
   photo.liked_by_user = !photo.liked_by_user;
 };
 
+/**
+ * 下载当前照片原图
+ * @param Photo 照片对象
+ */
 const downloadPhoto = (photo: Photo) => {
   const a = document.createElement("a");
   a.href = photo.links.download + "&force=true";
@@ -204,15 +231,14 @@ const downloadPhoto = (photo: Photo) => {
   snackbar.timeout = 1000;
 };
 
+// 照片详情页
 const photoDialog = ref(false);
+// 当前详情页照片ID
 const photoId = ref("");
+// 打开照片详情页
 const openPhotoDialog = (id: string) => {
   photoId.value = id;
   photoDialog.value = true;
-};
-
-const onScroll = (e: any) => {
-  console.log(e.target.scrollTop);
 };
 </script>
 
@@ -235,16 +261,16 @@ const onScroll = (e: any) => {
       <v-col cols="12" xl="10">
         <v-card class="mt-2">
           <v-tabs v-model="tab" bg-color="primary">
-            <v-tab value="photos" @click="currentTabKey = 'photos'"
+            <v-tab value="photos"
               ><v-icon class="mr-2">mdi-image-outline</v-icon> photos
               <span class="ml-2">({{ photoData.total }})</span></v-tab
             >
-            <v-tab value="collections" @click="currentTabKey = 'collections'">
+            <v-tab value="collections">
               collections<span class="ml-2"
                 >({{ collectionData.total }})</span
               ></v-tab
             >
-            <v-tab value="users" @click="currentTabKey = 'users'"
+            <v-tab value="users"
               ><v-icon class="mr-2">mdi-account-multiple</v-icon> users<span
                 class="ml-2"
                 >({{ userData.total }})</span
@@ -388,7 +414,6 @@ const onScroll = (e: any) => {
                     </v-col>
                   </v-row>
                   <v-btn
-                    v-if="photoParams.page < photoData.totalPages"
                     color=""
                     class="gradient info mt-5"
                     block
@@ -487,7 +512,6 @@ const onScroll = (e: any) => {
                     </v-col>
                   </v-row>
                   <v-btn
-                    v-if="collectionParams.page < collectionData.totalPages"
                     color=""
                     class="gradient info mt-5"
                     block
@@ -523,7 +547,6 @@ const onScroll = (e: any) => {
                     </v-col>
                   </v-row>
                   <v-btn
-                    v-if="userParams.page < userData.totalPages"
                     color=""
                     class="gradient info mt-5"
                     block
