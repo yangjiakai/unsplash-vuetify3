@@ -15,46 +15,10 @@ import {
 } from "@/api/unsplashApi";
 import { Icon, listIcons } from "@iconify/vue";
 import type { Photo, Collection, User } from "@/types/unsplashTypes";
-
 import { useUnsplashStore } from "@/stores/unsplashStore";
 import { BASE_URL, ACCESS_KEY, config } from "@/config/unsplashConfig";
 const unsplashStore = useUnsplashStore();
 const router = useRouter();
-
-interface SearchParams {
-  url: string;
-  query: string;
-  perPage: number;
-  page: number;
-}
-
-const searchParams: SearchParams = reactive({
-  url: BASE_URL + "search?",
-  query: "blue",
-  perPage: 20,
-  page: 1,
-});
-
-const photoParams: SearchParams = reactive({
-  url: BASE_URL + "search/photos?",
-  query: "blue",
-  perPage: 20,
-  page: 1,
-});
-
-const collectionParams: SearchParams = reactive({
-  url: BASE_URL + "search/collections?",
-  query: "blue",
-  perPage: 20,
-  page: 1,
-});
-
-const userParams: SearchParams = reactive({
-  url: BASE_URL + "search/users?",
-  query: "blue",
-  perPage: 20,
-  page: 1,
-});
 
 interface PhotoData {
   photos: Photo[];
@@ -97,6 +61,8 @@ const currentPhotoPage = ref(1);
 const currentCollectionPage = ref(1);
 const relatedSearches = ref<any[]>([]);
 
+const currentTabKey = ref("photos");
+
 const tab = ref(null);
 
 const updateView = (data: any) => {
@@ -123,7 +89,30 @@ const updateView = (data: any) => {
 
 onMounted(() => {
   updateView(unsplashStore.searchResult);
+  // window.addEventListener("scroll", onReachBottom);
 });
+
+// 触底加载更多图片
+const onReachBottom = () => {
+  const scrollTop =
+    document.documentElement.scrollTop || document.body.scrollTop; // 页面滚动的高度
+  const clientHeight = document.documentElement.clientHeight; // 可视区域高度
+  const scrollHeight =
+    document.documentElement.scrollHeight || document.body.scrollHeight; // 可滚动内容的高度
+  const bottomOfWindow = scrollTop + clientHeight >= scrollHeight - 82; // 是否触底
+  if (bottomOfWindow) {
+    console.log("kkk");
+
+    // 只有在列表未在请求中，并且有剩余数据可请求，并且触底的情况下，才能发起请求
+    if (
+      currentTabKey.value === "photos" &&
+      currentPhotoPage.value < photoData.totalPages
+    ) {
+      // 获取更多照片
+      morePhotos();
+    }
+  }
+};
 
 watch(
   () => unsplashStore.searchResult,
@@ -144,7 +133,7 @@ const morePhotos = async () => {
   currentPhotoPage.value++;
   const params = {
     query: currentKeyword.value,
-    per_page: 30,
+    per_page: 10,
     page: currentPhotoPage.value,
   };
   const response = await searchPhotosApi(params);
@@ -221,6 +210,10 @@ const openPhotoDialog = (id: string) => {
   photoId.value = id;
   photoDialog.value = true;
 };
+
+const onScroll = (e: any) => {
+  console.log(e.target.scrollTop);
+};
 </script>
 
 <template>
@@ -242,16 +235,16 @@ const openPhotoDialog = (id: string) => {
       <v-col cols="12" xl="10">
         <v-card class="mt-2">
           <v-tabs v-model="tab" bg-color="primary">
-            <v-tab value="photos"
+            <v-tab value="photos" @click="currentTabKey = 'photos'"
               ><v-icon class="mr-2">mdi-image-outline</v-icon> photos
               <span class="ml-2">({{ photoData.total }})</span></v-tab
             >
-            <v-tab value="collections">
+            <v-tab value="collections" @click="currentTabKey = 'collections'">
               collections<span class="ml-2"
                 >({{ collectionData.total }})</span
               ></v-tab
             >
-            <v-tab value="users"
+            <v-tab value="users" @click="currentTabKey = 'users'"
               ><v-icon class="mr-2">mdi-account-multiple</v-icon> users<span
                 class="ml-2"
                 >({{ userData.total }})</span
