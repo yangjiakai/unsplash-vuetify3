@@ -6,6 +6,7 @@ export const useUnsplashStore = defineStore({
   state: () => ({
     favoriteList: ref<Photo[]>([]),
     recentSearchList: ref<string[]>(["car", "book", "popular", "omega"]),
+    searchKey: ref(""),
     searchResult: ref(),
   }),
 
@@ -18,6 +19,10 @@ export const useUnsplashStore = defineStore({
 
   getters: {},
   actions: {
+    clearSearchKey() {
+      this.searchKey = "";
+    },
+
     addToFavorite(payload: Photo) {
       this.favoriteList.push(payload);
     },

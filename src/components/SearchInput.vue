@@ -4,11 +4,12 @@
 * @Description: 
 -->
 <script setup lang="ts">
-import { BASE_URL, config } from "../config/unsplashConfig";
+import { BASE_URL } from "../config/unsplashConfig";
 import { useFocusWithin } from "@vueuse/core";
 import { useUnsplashStore } from "../stores/unsplashStore";
 import SearchPanel from "../components/SearchPanel.vue";
 import { searchAllApi } from "@/api/unsplashApi";
+import { Icon } from "@iconify/vue";
 const unsplashStore = useUnsplashStore();
 const router = useRouter();
 const route = useRouter();
@@ -17,7 +18,6 @@ const searchPanelShow = ref(false);
 const select = ref();
 const searchKey = ref("");
 const selectList = ref<string[]>([]);
-const selectResponse = ref();
 
 const states = ref([
   "Alabama",
@@ -82,29 +82,32 @@ const states = ref([
 ]);
 
 const photoStatisticsUrl = computed(() => {
-  return `${BASE_URL}topics/${searchKey.value}`;
+  return `${BASE_URL}topics/${unsplashStore.searchKey}`;
 });
 
 // 监听检索关键词变化，为空时相似关键词列表清空，且显示检索面板，否则显示关键词列表
-watch(searchKey, (val) => {
-  if (val) {
-    searchPanelShow.value = false;
-    if (val !== select.value) {
-      querySelections(val);
+watch(
+  () => unsplashStore.searchKey,
+  (val) => {
+    if (val) {
+      searchPanelShow.value = false;
+      if (val !== select.value) {
+        querySelections(val);
+      } else {
+        setTimeout(() => {
+          selectList.value = [];
+        }, 300);
+      }
     } else {
       setTimeout(() => {
         selectList.value = [];
       }, 300);
+      setTimeout(() => {
+        searchPanelShow.value = true;
+      }, 500);
     }
-  } else {
-    setTimeout(() => {
-      selectList.value = [];
-    }, 300);
-    setTimeout(() => {
-      searchPanelShow.value = true;
-    }, 500);
   }
-});
+);
 
 // 根据检索关键词过滤查询类似关键词列表
 const querySelections = (key: string) => {
@@ -118,27 +121,27 @@ const querySelections = (key: string) => {
 };
 
 // 检索面板显示条件：1.当前焦点在检索框或者检索面板上 2.检索框为空
-const refSearchInput = ref();
-const refSearchPanel = ref();
-const searchInputFocus = useFocusWithin(refSearchInput);
-const searchPanelFocus = useFocusWithin(refSearchPanel);
+// const refSearchInput = ref();
+// const refSearchPanel = ref();
+// const searchInputFocus = useFocusWithin(refSearchInput);
+// const searchPanelFocus = useFocusWithin(refSearchPanel);
 
-watch(
-  [searchInputFocus.focused, searchPanelFocus.focused],
-  ([searchInputFocued, searchPanelFocused]) => {
-    console.log(searchInputFocued, searchPanelFocused);
+// watch(
+//   [searchInputFocus.focused, searchPanelFocus.focused],
+//   ([searchInputFocued, searchPanelFocused]) => {
+//     console.log(searchInputFocued, searchPanelFocused);
 
-    if ((searchInputFocued || searchPanelFocused) && !searchKey.value) {
-      searchPanelShow.value = true;
-    } else {
-      searchPanelShow.value = false;
-    }
-  }
-);
+//     if ((searchInputFocued || searchPanelFocused) && !unsplashStore.searchKey) {
+//       searchPanelShow.value = true;
+//     } else {
+//       searchPanelShow.value = false;
+//     }
+//   }
+// );
 
 const search = async () => {
   const params = {
-    query: searchKey.value,
+    query: unsplashStore.searchKey,
     per_page: 30,
     page: 1,
   };
@@ -156,83 +159,35 @@ const search = async () => {
 
 <template>
   <v-card width="1000" class="search-container">
+    <!-- filled" | "outlined" | "plain" | "underlined" | "solo" -->
     <v-autocomplete
+      variant="solo"
       color="info"
       elevation="1"
       ref="refSearchInput"
       class="main-search"
       v-model="select"
-      v-model:search="searchKey"
+      v-model:search="unsplashStore.searchKey"
       :items="selectList"
       :loading="loading"
       density="comfortable"
       hide-details
-      label="Keyword"
+      prepend-inner-icon="mdi-magnify"
       @keyup.enter="search"
+      placeholder="Search Images"
     >
       <template v-slot:no-data>
-        <!-- <v-btn color="success">text</v-btn> -->
-        <SearchPanel />
+        <SearchPanel v-if="unsplashStore.searchKey === ''" />
+        <div v-else>
+          <v-img
+            src="https://unsplash-assets.imgix.net/empty-states/photos.png"
+            height="290"
+          ></v-img>
+        </div>
       </template>
     </v-autocomplete>
 
-    <div ref="refSearchPanel" v-show="searchPanelShow" class="panel">
-      <!-- <v-sheet style="border-radius: 5px" elevation="5" class="py-10 px-3">
-        <div>
-          <p class="my-2">
-            Recent Searches
-            <v-btn
-              class="ml-2"
-              variant="text"
-              color="primary"
-              @click="unsplashStore.clearRecentSearchList()"
-              >Clear</v-btn
-            >
-          </p>
-          <p v-if="unsplashStore.recentSearchList.length > 0">
-            <v-btn
-              class="mr-5"
-              v-for="item in unsplashStore.recentSearchList"
-              variant="outlined"
-              >blue</v-btn
-            >
-          </p>
-        </div>
-        <div>
-          <p class="my-5">Trending Searches</p>
-          <p>
-            <v-btn
-              class="mr-5"
-              v-for="item in trendingSearches"
-              variant="outlined"
-              >{{ item }}</v-btn
-            >
-          </p>
-        </div>
-        <div>
-          <p class="my-5">Trending Topics</p>
-          <p>
-            <v-btn
-              class="mr-5"
-              v-for="item in trendingSearches"
-              variant="outlined"
-              >{{ item }}</v-btn
-            >
-          </p>
-        </div>
-        <div>
-          <p class="my-5">Trending Collecitons</p>
-          <p>
-            <v-btn
-              class="mr-5"
-              v-for="item in trendingSearches"
-              variant="outlined"
-              >{{ item }}</v-btn
-            >
-          </p>
-        </div>
-      </v-sheet> -->
-    </div>
+    <div ref="refSearchPanel" v-show="searchPanelShow" class="panel"></div>
   </v-card>
 </template>
 
