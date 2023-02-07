@@ -178,7 +178,7 @@ const search = async () => {
     >
       <template v-slot:no-data>
         <SearchPanel v-if="unsplashStore.searchKey === ''" />
-        <div v-else>
+        <div class="d-flex align-center justify-center" v-else>
           <v-img
             src="https://unsplash-assets.imgix.net/empty-states/photos.png"
             height="290"

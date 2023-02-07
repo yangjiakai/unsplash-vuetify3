@@ -5,7 +5,7 @@ export const useUnsplashStore = defineStore({
   id: "upsplash",
   state: () => ({
     favoriteList: ref<Photo[]>([]),
-    recentSearchList: ref<string[]>(["car", "book", "popular", "omega"]),
+    recentSearchList: ref<string[]>(["blue", "red", "green", "wall"]),
     searchKey: ref(""),
     searchResult: ref(),
   }),
