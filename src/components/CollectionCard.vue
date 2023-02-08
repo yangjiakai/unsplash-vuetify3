@@ -37,6 +37,7 @@ const snackbar = reactive({
             <v-col cols="4">
               <div class="flex-1 pb-1">
                 <v-img
+                  v-if="collection.preview_photos.length > 2"
                   height="150"
                   cover
                   :src="collection.preview_photos[1].urls.small"
@@ -44,6 +45,7 @@ const snackbar = reactive({
                   class="mb-1"
                 />
                 <v-img
+                  v-if="collection.preview_photos.length > 3"
                   height="150"
                   cover
                   :src="collection.preview_photos[2].urls.small"

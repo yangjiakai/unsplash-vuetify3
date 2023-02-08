@@ -21,7 +21,10 @@ const snackbar = reactive({
 
 <template>
   <div class="">
-    <v-card width="100%" class="user-card d-flex flex-column justify-space-between">
+    <v-card
+      width="100%"
+      class="user-card d-flex flex-column justify-space-between"
+    >
       <div class="card-top bg-secondary-lighten-1 text-content">
         <v-avatar class="mr-5" size="avatarSize">
           <img :src="user.profile_image.small" alt="alt" />
@@ -38,18 +41,41 @@ const snackbar = reactive({
       </div>
 
       <div class="d-flex px-2">
-        <v-img v-if="user.photos.length > 0" height="100" cover :key="user.photos[0].id"
-          :src="user.photos[0].urls.small"></v-img>
-        <v-img v-if="user.photos.length > 1" class="mx-1" height="100" cover :key="user.photos[1].id"
-          :src="user.photos[1].urls.small"></v-img>
-        <v-img v-if="user.photos.length > 2" height="100" cover :key="user.photos[2].id"
-          :src="user.photos[2].urls.small"></v-img>
+        <v-img
+          v-if="user.photos.length > 0"
+          height="100"
+          cover
+          :key="user.photos[0].id"
+          :src="user.photos[0].urls.small"
+        ></v-img>
+        <v-img
+          v-if="user.photos.length > 1"
+          class="mx-1"
+          height="100"
+          cover
+          :key="user.photos[1].id"
+          :src="user.photos[1].urls.small"
+        ></v-img>
+        <v-img
+          v-if="user.photos.length > 2"
+          height="100"
+          cover
+          :key="user.photos[2].id"
+          :src="user.photos[2].urls.small"
+        ></v-img>
       </div>
       <v-card-actions>
         <v-tooltip location="bottom" text="Profile">
           <template v-slot:activator="{ props }">
-            <v-btn color="primary" variant="flat" block v-bind="props" :to="`user/${user.username}`">
-              Profile</v-btn>
+            <v-btn
+              color="primary"
+              variant="flat"
+              block
+              v-bind="props"
+              :to="`user/${user.username}`"
+            >
+              Profile</v-btn
+            >
           </template>
         </v-tooltip>
       </v-card-actions>

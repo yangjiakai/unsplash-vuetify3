@@ -147,9 +147,21 @@ initData();
 
     <v-card-text>
       <v-window v-model="tab">
+        <!-- Photos -->
         <v-window-item value="photos">
-          <v-sheet v-if="userLikesData.length > 0" min-height="80vh">
-            <v-row> </v-row>
+          <v-sheet v-if="userPhotosData.length > 0" min-height="80vh">
+            <v-row>
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+                v-for="photo in userPhotosData"
+                :key="photo.id"
+              >
+                <PhotoCard :photo="photo"></PhotoCard>
+              </v-col>
+            </v-row>
           </v-sheet>
           <v-sheet
             v-else
@@ -162,6 +174,7 @@ initData();
             ></v-img>
           </v-sheet>
         </v-window-item>
+        <!-- Likes -->
         <v-window-item value="likes">
           <v-sheet v-if="userLikesData.length > 0" min-height="80vh">
             <v-row>
@@ -188,6 +201,7 @@ initData();
             ></v-img>
           </v-sheet>
         </v-window-item>
+        <!-- Collections -->
         <v-window-item value="collections" class="pa-1">
           <v-sheet v-if="userCollectionsData.length > 0" min-height="80vh">
             <v-row>
