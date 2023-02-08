@@ -104,7 +104,7 @@ export const getCollectionPhotosApi = (
   id: string | string[],
   query?: Query
 ) => {
-  return axios.get("/collections/" + id + "/collections", { params: query });
+  return axios.get("/collections/" + id + "/photos", { params: query });
 };
 // List a collection’s related collections 获取该图集相关联图集
 export const getCollectionRelatedApi = (id: string | string[]) => {
