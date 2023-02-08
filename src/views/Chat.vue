@@ -6,7 +6,43 @@
 <script setup lang="ts">
 import { useAiStore } from "@/stores/aiStore";
 const aiStore = useAiStore();
-const channels = ref(["general", "production", "qa", "staging", "random"]);
+const channels = ref([
+  {
+    id: 1,
+    title: "问答",
+    icon: "mdi-forum",
+    url: "",
+    active: true,
+  },
+  {
+    id: 2,
+    title: "语法纠正",
+    icon: "mdi-text-box-check-outline",
+    url: "",
+    active: false,
+  },
+  {
+    id: 3,
+    title: "翻译",
+    icon: "mdi-translate",
+    url: "",
+    active: false,
+  },
+  {
+    id: 4,
+    title: "解释代码",
+    icon: "mdi-code-less-than-or-equal",
+    url: "",
+    active: false,
+  },
+  {
+    id: 5,
+    title: "SQL查询",
+    icon: "mdi-database-search",
+    url: "",
+    active: false,
+  },
+]);
 const user = ref({
   id: 12,
   name: "John Cena",
@@ -17,36 +53,33 @@ const user = ref({
 <template>
   <div style="height: 100%">
     <v-navigation-drawer
+      floating
+      permanent
       v-model="aiStore.isSideBarShow"
       elevation="1"
       class="rounded"
       width="240"
     >
-      <div class="px-2 py-1">
-        <div class="title font-weight-bold primary--text">Chat Template</div>
-        <div class="overline">1.0.0</div>
+      <div class="px-3 py-3">
+        <div class="text-h6 font-weight-bold text-primary">OpenAI</div>
       </div>
-      <v-list dense>
-        <v-subheader class="ml-1 overline">channel</v-subheader>
-        <div class="mx-2 mb-2">
-          <v-btn outlined block>
-            <v-icon small left>mdi-plus</v-icon>
-            addChannel
-          </v-btn>
-        </div>
 
-        <!-- channels list -->
+      <v-list density="compact" nav>
         <v-list-item
-          v-for="channelItem in channels"
-          :key="channelItem"
-          :to="`chat/channel/${channelItem}`"
-          exact
-        >
-          <v-list-item-content>
-            <v-list-item-title># {{ channelItem }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          color="primary"
+          v-for="item in channels"
+          :prepend-icon="item.icon"
+          :title="item.title"
+          :value="item.title"
+          :active="item.active"
+        ></v-list-item>
       </v-list>
+      <div class="px-3">
+        <v-btn outlined block>
+          <v-icon small left>mdi-plus</v-icon>
+          addChannel
+        </v-btn>
+      </div>
     </v-navigation-drawer>
 
     <!-- channel view -->
