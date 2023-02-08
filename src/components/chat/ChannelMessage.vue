@@ -31,14 +31,7 @@ onMounted(() => {});
     :class="{ 'flex-row-reverse': isOwnMessage }"
   >
     <v-avatar size="40" class="elevation-1 grey lighten-3">
-      <v-img
-        v-if="user.avatar"
-        src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-      />
-      <v-img
-        v-else
-        src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-      />
+      <v-img v-if="message.user.avatar" :src="message.user.avatar" />
     </v-avatar>
 
     <div class="mx-2">

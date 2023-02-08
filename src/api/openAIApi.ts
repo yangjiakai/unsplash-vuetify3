@@ -1,14 +1,15 @@
 import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
 export const generateApi: any = (keyword: string) => {
   return openai.createCompletion({
     model: "text-davinci-003",
-    prompt: generatePrompt(keyword),
+    // prompt: generatePrompt(keyword),
+    prompt: keyword,
     temperature: 0.6,
   });
 };

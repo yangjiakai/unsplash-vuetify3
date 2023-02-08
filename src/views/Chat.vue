@@ -4,7 +4,8 @@
 * @Description: 
 -->
 <script setup lang="ts">
-const drawer = ref(true);
+import { useAiStore } from "@/stores/aiStore";
+const aiStore = useAiStore();
 const channels = ref(["general", "production", "qa", "staging", "random"]);
 const user = ref({
   id: 12,
@@ -16,7 +17,7 @@ const user = ref({
 <template>
   <div style="height: 100%">
     <v-navigation-drawer
-      v-model="drawer"
+      v-model="aiStore.isSideBarShow"
       elevation="1"
       class="rounded"
       width="240"
@@ -49,8 +50,12 @@ const user = ref({
     </v-navigation-drawer>
 
     <!-- channel view -->
-    <v-sheet height="100%" color="blue">
-      <router-view :user="user" @toggle-menu="drawer = !drawer"></router-view>
+
+    <v-sheet width="100%" height="100%" color="blue">
+      <router-view
+        :user="user"
+        @toggle-menu="aiStore.isSideBarShow = !aiStore.isSideBarShow"
+      ></router-view>
     </v-sheet>
   </div>
 </template>

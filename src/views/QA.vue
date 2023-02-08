@@ -8,29 +8,50 @@
 import { users, getMessage } from "./content/messages";
 import ChannelMessage from "@/components/chat/ChannelMessage.vue";
 import InputBox from "@/components/chat/InputBox.vue";
+import { useAiStore } from "@/stores/aiStore";
+import { generateApi } from "@/api/openAIApi";
+const aiStore = useAiStore();
 
 const route = useRoute();
 const messages = ref<any[]>([]);
 
 const user = ref({
-  id: 12,
+  id: 1,
   name: "YANG",
-  avatar: "/images/avatars/avatar1.svg",
+  avatar: "https://avatars.githubusercontent.com/u/35951244?v=4",
 });
+
+const bot = ref({
+  id: 2,
+  name: "AI",
+  avatar:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwrAiMevuwrbU9o0Ck2paVf4ufHUDb2dU48MEDrAlrQw&s",
+});
+
 const cusers = ref<any[]>([user.value, ...users]);
 const startChannel = () => {
   messages.value = [];
-  messages.value.push(getMessage());
-  messages.value.push(getMessage());
-  messages.value.push(getMessage());
+  messages.value.push(getMessage(bot.value));
+  messages.value.push(getMessage(user.value));
+  messages.value.push(getMessage(bot.value));
   messages.value.push(getMessage(user.value));
 };
 
-const sendMessage = (message: string) => {
+const sendMessage = async (message: string) => {
   messages.value.push({
     id: "_" + Math.random().toString(36).substr(2, 9),
     user: user.value,
     text: message,
+    timestamp: new Date().getTime(),
+  });
+
+  const response = await generateApi(message);
+  const answer = response.data.choices[0].text;
+
+  messages.value.push({
+    id: "_" + Math.random().toString(36).substr(2, 9),
+    user: bot.value,
+    text: answer,
     timestamp: new Date().getTime(),
   });
 };
@@ -72,7 +93,12 @@ onMounted(() => {
       </transition-group>
     </div>
 
-    <v-card class="input-box pa-2">
+    <v-card
+      :style="
+        aiStore.isSideBarShow ? 'width: calc(100% - 240px)' : 'width: 100%)'
+      "
+      class="input-box pa-2"
+    >
       <input-box channel="QA" @send-message="sendMessage" />
     </v-card>
   </div>
@@ -100,8 +126,10 @@ onMounted(() => {
   height: 100% !important;
   display: flex;
   flex-direction: column;
-  background-image: url("@/assets/images/chat-bg.png");
-  background-size: cover;
+  background-repeat: repeat;
+  background-image: url("@/assets/images/chat-bg-2.png");
+  // background-image: url("https://images.unsplash.com/photo-1579187707643-35646d22b596?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80");
+
   background-attachment: fixed;
 
   .messages {
@@ -116,7 +144,7 @@ onMounted(() => {
   .input-box {
     position: fixed;
     bottom: 0px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
     width: calc(100% - 240px);
   }
 }
