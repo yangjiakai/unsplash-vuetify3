@@ -4,7 +4,7 @@
 * @Description: 
 -->
 <script setup lang="ts">
-import { BASE_URL, config } from "@/config/unsplashConfig";
+import { BASE_URL } from "@/config/unsplashConfig";
 
 const route = useRoute();
 
@@ -24,15 +24,9 @@ const isLoading = ref(false);
 
 const initData = async () => {
   isLoading.value = true;
-  const collectionResponse = await axios.get(collectionUrl.value, config);
-  const collectionPhotosResponse = await axios.get(
-    collectionPhotosUrl.value,
-    config
-  );
-  const collectionSimilarResponse = await axios.get(
-    collectionSimilarUrl.value,
-    config
-  );
+  const collectionResponse = await axios.get(collectionUrl.value);
+  const collectionPhotosResponse = await axios.get(collectionPhotosUrl.value);
+  const collectionSimilarResponse = await axios.get(collectionSimilarUrl.value);
   isLoading.value = false;
 };
 

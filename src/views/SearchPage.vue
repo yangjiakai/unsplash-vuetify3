@@ -16,7 +16,7 @@ import {
 import { Icon, listIcons } from "@iconify/vue";
 import type { Photo, Collection, User } from "@/types/unsplashTypes";
 import { useUnsplashStore } from "@/stores/unsplashStore";
-import { BASE_URL, ACCESS_KEY, config } from "@/config/unsplashConfig";
+import { BASE_URL, ACCESS_KEY } from "@/config/unsplashConfig";
 const unsplashStore = useUnsplashStore();
 const router = useRouter();
 

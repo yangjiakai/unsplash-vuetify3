@@ -4,7 +4,7 @@
 * @Description: 
 -->
 <script setup lang="ts">
-import { BASE_URL, ACCESS_KEY, config } from "@/config/unsplashConfig";
+import { BASE_URL, ACCESS_KEY } from "@/config/unsplashConfig";
 import type { Photo } from "@/types/unsplashTypes";
 import PhotoCard from "@/components/PhotoCard.vue";
 import PhotoInfoChartCard from "@/components/PhotoInfoChartCard.vue";
@@ -40,8 +40,8 @@ const isLoading = ref(false);
 
 const initData = async () => {
   isLoading.value = true;
-  const photoResponse = await axios.get(photoUrl.value, config);
-  const relatedResponse = await axios.get(photoRelatedUrl.value, config);
+  const photoResponse = await axios.get(photoUrl.value);
+  const relatedResponse = await axios.get(photoRelatedUrl.value);
   photo.value = photoResponse.data;
   relatedPhotos.value = relatedResponse.data.results;
   isLoading.value = false;

@@ -16,7 +16,7 @@ import {
   TooltipComponent,
 } from "echarts/components";
 import type { ChartData, Photo } from "../types/unsplashTypes";
-import { BASE_URL, config } from "../config/unsplashConfig";
+import { BASE_URL } from "../config/unsplashConfig";
 
 const props = defineProps<{
   photo: Photo;
@@ -103,10 +103,7 @@ const chartOptions = computed(() => {
 
 const initData = async () => {
   isLoading.value = true;
-  const photoStatisticsResponse = await axios.get(
-    photoStatisticsUrl.value,
-    config
-  );
+  const photoStatisticsResponse = await axios.get(photoStatisticsUrl.value);
   photoStatistics.value = photoStatisticsResponse.data;
 
   xAxis.value = photoStatisticsResponse.data.downloads.historical.values.map(

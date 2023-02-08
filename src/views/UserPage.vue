@@ -4,7 +4,7 @@
 * @Description: Page Of User 
 -->
 <script setup lang="ts">
-import { BASE_URL, config } from "@/config/unsplashConfig";
+import { BASE_URL } from "@/config/unsplashConfig";
 import axios from "axios";
 import { useUnsplashStore } from "@/stores/unsplashStore";
 import PhotoCard from "@/components/PhotoCard.vue";
@@ -38,13 +38,10 @@ const isLoading = ref(false);
 
 const initData = async () => {
   isLoading.value = true;
-  const userProfileResponse = await axios.get(userProfileUrl.value, config);
-  const userPhotosResponse = await axios.get(userPhotosUrl.value, config);
-  const userLikesResponse = await axios.get(userLikesUrl.value, config);
-  const userCollectionsResponse = await axios.get(
-    userCollectionsUrl.value,
-    config
-  );
+  const userProfileResponse = await axios.get(userProfileUrl.value);
+  const userPhotosResponse = await axios.get(userPhotosUrl.value);
+  const userLikesResponse = await axios.get(userLikesUrl.value);
+  const userCollectionsResponse = await axios.get(userCollectionsUrl.value);
   userPhotosData.value = userPhotosResponse.data;
   userProfileData.value = userProfileResponse.data;
   userLikesData.value = userLikesResponse.data;
