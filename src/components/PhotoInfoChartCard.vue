@@ -151,7 +151,7 @@ initData();
 
 <template>
   <div class="">
-    <v-card class="shadow-1">
+    <v-card class="shadow-1" min-height="400">
       <v-card-text style="height: 300px">
         <VChart :option="chartOptions" autoresize />
       </v-card-text>

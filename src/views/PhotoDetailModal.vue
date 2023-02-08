@@ -122,7 +122,7 @@ initData();
           <div class="photos-info mt-5">
             <v-row>
               <v-col cols="12" md="6">
-                <v-card class="shadow-1 h-full">
+                <v-card class="shadow-1 h-full full-h" min-height="400">
                   <div class="my-3">
                     <v-icon class="mx-3">mdi-map</v-icon>
                     <span>{{ photo.location.country }}</span>
