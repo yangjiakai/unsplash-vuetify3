@@ -139,12 +139,20 @@ const querySelections = (key: string) => {
 //   }
 // );
 
+const refSearchInput = ref();
+
 const search = async () => {
   const params = {
     query: unsplashStore.searchKey,
     per_page: 30,
     page: 1,
   };
+  // if unsplashStore.searchKey is empty，return
+  if (!unsplashStore.searchKey) {
+    return;
+  } else {
+    unsplashStore.addToRecentSearchList();
+  }
 
   const topicsResponse = await searchAllApi(params);
   unsplashStore.searchResult = topicsResponse.data;
@@ -161,6 +169,7 @@ const search = async () => {
   <v-card width="1000" class="search-container">
     <!-- filled" | "outlined" | "plain" | "underlined" | "solo" -->
     <v-autocomplete
+      tabindex="0"
       variant="solo"
       color="info"
       elevation="1"
@@ -175,6 +184,7 @@ const search = async () => {
       prepend-inner-icon="mdi-magnify"
       @keyup.enter="search"
       placeholder="Search Images"
+      :menu-props="{ closeOnContentClick: true }"
     >
       <template v-slot:no-data>
         <SearchPanel v-if="unsplashStore.searchKey === ''" />
@@ -186,7 +196,6 @@ const search = async () => {
         </div>
       </template>
     </v-autocomplete>
-
     <div ref="refSearchPanel" v-show="searchPanelShow" class="panel"></div>
   </v-card>
 </template>

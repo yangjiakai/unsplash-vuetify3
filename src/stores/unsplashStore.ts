@@ -19,6 +19,17 @@ export const useUnsplashStore = defineStore({
 
   getters: {},
   actions: {
+    addToRecentSearchList() {
+      // 新元素插入到数组首位
+      this.recentSearchList.unshift(this.searchKey);
+      // 去重
+      this.recentSearchList = [...new Set(this.recentSearchList)];
+      // 长度大于5的时候，截取前5位
+      if (this.recentSearchList.length > 5) {
+        this.recentSearchList = this.recentSearchList.slice(0, 5);
+      }
+    },
+
     clearSearchKey() {
       this.searchKey = "";
     },
