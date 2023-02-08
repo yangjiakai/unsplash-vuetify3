@@ -1,0 +1,66 @@
+<!--
+* @Component: 
+* @Maintainer: J.K. Yang
+* @Description: 
+-->
+<script setup lang="ts">
+// Props
+const props = defineProps({
+  // Current logged user
+  user: {
+    type: Object,
+    default: () => {},
+  },
+  // Message to display
+  message: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
+const isOwnMessage = computed(() => {
+  return props.user.id === props.message.user.id;
+});
+
+onMounted(() => {});
+</script>
+
+<template>
+  <div
+    class="d-flex flex-grow-1 align-center"
+    :class="{ 'flex-row-reverse': isOwnMessage }"
+  >
+    <v-avatar size="40" class="elevation-1 grey lighten-3">
+      <v-img
+        v-if="user.avatar"
+        src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+      />
+      <v-img
+        v-else
+        src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+      />
+    </v-avatar>
+
+    <div class="mx-2">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-card
+            class="pa-1"
+            :class="{ 'bg-primary': isOwnMessage }"
+            :dark="isOwnMessage"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <div class="font-weight-bold pa-2">
+              {{ message.text }}
+              <span class="text-red">{{ message.user.name }}</span>
+            </div>
+          </v-card>
+        </template>
+        <span>{{ message.timestamp }}</span>
+      </v-tooltip>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss"></style>

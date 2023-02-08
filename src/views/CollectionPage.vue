@@ -71,7 +71,9 @@ initData();
       v-if="collectionPhotosData.length > 0"
       min-height="80vh"
     >
-      <h2 v-if="collectionData">{{ collectionData.total_photos }} Photos</h2>
+      <h2 class="text-h6 mb-5" v-if="collectionData">
+        {{ collectionData.total_photos }} Photos
+      </h2>
       <v-row justify="center">
         <v-col
           cols="12"

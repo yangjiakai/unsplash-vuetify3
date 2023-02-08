@@ -20,22 +20,6 @@ import {
 } from "@/api/unsplashApi";
 const unsplashStore = useUnsplashStore();
 const route = useRoute();
-const userProfileUrl = computed(() => {
-  return BASE_URL + "users/" + route.params.username;
-});
-
-const userPhotosUrl = computed(() => {
-  return BASE_URL + "users/" + route.params.username + "/photos";
-});
-
-const userLikesUrl = computed(() => {
-  return BASE_URL + "users/" + route.params.username + "/likes";
-});
-
-const userCollectionsUrl = computed(() => {
-  return BASE_URL + "users/" + route.params.username + "/collections";
-});
-
 const userProfileData = ref<User>();
 const userPhotosData = ref<Photo[]>([]);
 const userLikesData = ref<Photo[]>([]);

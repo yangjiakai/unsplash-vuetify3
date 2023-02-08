@@ -4,12 +4,6 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/ui",
-      name: "ui",
-      component: () =>
-        import(/* webpackChunkName: "unsplash-ui" */ "@/views/UI.vue"),
-    },
-    {
       path: "/",
       redirect: "/home",
     },
@@ -57,57 +51,30 @@ const router = createRouter({
           /* webpackChunkName: "app-unsplash" */ "@/views/UnsplashApp.vue"
         ),
     },
-
-    // {
-    //   path: "/",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "app-unsplash" */ "@/views/UnsplashApp.vue"
-    //     ),
-
-    //   children: [
-    //     {
-    //       path: "",
-    //       // redirect: "photos",
-    //       component: () =>
-    //         import(
-    //           /* webpackChunkName: "unsplash-photos" */ "@/views/PhotosPage.vue"
-    //         ),
-    //     },
-    //     {
-    //       path: "user/:username",
-    //       name: "unsplash-user",
-    //       component: () =>
-    //         import(
-    //           /* webpackChunkName: "unsplash-user" */ "@/views/UserPage.vue"
-    //         ),
-    //     },
-    //     {
-    //       path: "collection/:id",
-    //       name: "unsplash-collection",
-    //       component: () =>
-    //         import(
-    //           /* webpackChunkName: "unsplash-collection" */ "@/views/CollectionPage.vue"
-    //         ),
-    //     },
-    //     {
-    //       path: "topic/:slug",
-    //       name: "unsplash-topic",
-    //       component: () =>
-    //         import(
-    //           /* webpackChunkName: "unsplash-topic" */ "@/views/TopicPage.vue"
-    //         ),
-    //     },
-    //     {
-    //       path: "my-page",
-    //       name: "unsplash-my-page",
-    //       component: () =>
-    //         import(
-    //           /* webpackChunkName: "unsplash-my-page" */ "@/views/MyPage.vue"
-    //         ),
-    //     },
-    //   ],
-    // },
+    {
+      path: "/ai",
+      name: "ai",
+      component: () =>
+        import(/* webpackChunkName: "unsplash-ai" */ "@/views/AI.vue"),
+    },
+    {
+      path: "/chat",
+      name: "chat",
+      component: () =>
+        import(/* webpackChunkName: "unsplash-chat" */ "@/views/Chat.vue"),
+      children: [
+        {
+          path: "/chat",
+          redirect: "/chat/channel/qa",
+        },
+        {
+          path: "/chat/channel/qa",
+          name: "apps-qa-channel",
+          component: () =>
+            import(/* webpackChunkName: "apps-qa-channel" */ "@/views/QA.vue"),
+        },
+      ],
+    },
   ],
 });
 
