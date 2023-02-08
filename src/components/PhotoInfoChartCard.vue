@@ -5,7 +5,8 @@
 -->
 <script setup lang="ts">
 import VChart from "vue-echarts";
-import { number, use } from "echarts/core";
+import { getPhotoStatisticsApi } from "@/api/unsplashApi";
+import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart } from "echarts/charts";
 

@@ -4,7 +4,7 @@
 * @Description: Imitate Nitori App
 -->
 <script setup lang="ts">
-import { getARandomPhotosApi, getPhotosApi } from "@/api/unsplashApi";
+import { getRandomPhotoApi, getPhotosApi } from "@/api/unsplashApi";
 import type { Topic, Photo } from "@/types/unsplashTypes";
 import PhotoCard from "@/components/PhotoCard.vue";
 import TopicsBar from "@/components/TopicsBar.vue";
@@ -16,7 +16,7 @@ const initData = async () => {
   const photosResponse = await getPhotosApi();
   photos.value = photosResponse.data;
 
-  const bannerResponse = await getARandomPhotosApi();
+  const bannerResponse = await getRandomPhotoApi();
   banner.value = bannerResponse.data;
 };
 

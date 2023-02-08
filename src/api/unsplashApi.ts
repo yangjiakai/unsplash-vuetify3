@@ -1,97 +1,106 @@
 import { BASE_URL, ACCESS_KEY } from "@/config/unsplashConfig";
+
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 axios.defaults.headers["Authorization"] = "Client-ID" + " " + ACCESS_KEY;
+axios.defaults.baseURL = BASE_URL;
 
-const topicsUrl = BASE_URL + "topics";
-const photosUrl = BASE_URL + "photos";
+interface Query {
+  page?: number;
+  per_page?: number;
+}
 
-// Photo
-export const getPhotosApi = () => {
-  const url = photosUrl + "?per_page=30";
-  return axios.get(url);
+// List photos 图片一览
+export const getPhotosApi = (query?: Query) => {
+  return axios.get("/photos/", { params: query });
 };
 
-export const getAPhotoApi = (id: string) => {
-  const url = photosUrl + "/" + id;
-  return axios.get(url);
+// Get a photo 获取图片信息
+export const getPhotoApi = (id: string) => {
+  return axios.get("/photos/" + id);
 };
 
-export const getARandomPhotosApi = () => {
-  const url = photosUrl + "/random";
-  return axios.get(url);
+// Get a random photo 获取一张随机图片
+export const getRandomPhotoApi = () => {
+  return axios.get("/photos/random");
 };
 
-export const getAPhotoStatisticsApi = (id: string) => {
-  const url = photosUrl + "/" + id + "/statistics";
-  return axios.get(url);
+// Get a photo’s statistics 获取照片的统计数据
+export const getPhotoStatisticsApi = (id: string) => {
+  return axios.get("/photos/" + id + "/statistics");
 };
 
-//  Topic
-export const getTopicsApi = () => {
-  return axios.get(topicsUrl);
+// Get a photo’s related 获取照片的相关照片
+export const getPhotoRelatedApi = (id: string) => {
+  return axios.get("/photos/" + id + "/related");
 };
 
-export const getATopicApi = (id_or_slug: string | string[]) => {
-  const url = topicsUrl + "/" + id_or_slug;
-  return axios.get(url);
+// Track a photo download
+// Update a photo
+// Like a photo
+// Unlike a photo
+
+// Topic
+// List topics
+export const getTopicsApi = (query?: Query) => {
+  return axios.get("/topics", { params: query });
 };
 
-export const getTopicPhotosApi = (id_or_slug: string | string[]) => {
-  const url = topicsUrl + "/" + id_or_slug + "/photos?per_page=30";
-  return axios.get(url);
+// Get a topic
+export const getTopicApi = (id_or_slug: string | string[]) => {
+  return axios.get("/topics/" + id_or_slug);
+};
+
+// Get a topic’s photos
+export const getTopicPhotosApi = (
+  id_or_slug: string | string[],
+  query?: Query
+) => {
+  return axios.get("/topics/" + id_or_slug + "/photos", { params: query });
 };
 
 // Get a user
 export const getUserApi = (username: string) => {
-  const url = BASE_URL + "users/" + username;
-  return axios.get(url);
+  return axios.get("/users/" + username);
 };
 // Get a user’s portfolio
 export const getUserPortfolioApi = (username: string) => {
-  const url = BASE_URL + "users/" + username + "/portfolio";
-  return axios.get(url);
+  return axios.get("/users/" + username + "/portfolio");
 };
 // List a user’s photos
-export const getUserPhotosApi = (username: string) => {
-  const url = BASE_URL + "users/" + username + "/photos?per_page=30";
-  return axios.get(url);
+export const getUserPhotosApi = (username: string, query?: Query) => {
+  return axios.get("/users/" + username + "/photos", { params: query });
 };
+
 // List a user’s liked photos
-export const getUserLikesApi = (username: string) => {
-  const url = BASE_URL + "users/" + username + "/likes?per_page=30";
-  return axios.get(url);
+export const getUserLikesApi = (username: string, query?: Query) => {
+  return axios.get("/users/" + username + "/likes", { params: query });
 };
 // List a user’s collections
-export const getUserCollectionsApi = (username: string) => {
-  const url = BASE_URL + "users/" + username + "/collections?per_page=30";
-  return axios.get(url);
+export const getUserCollectionsApi = (username: string, query?: Query) => {
+  return axios.get("/users/" + username + "/collections", { params: query });
 };
 // Get a user’s statistics
 export const getUserStatisticsApi = (username: string) => {
-  const url = BASE_URL + "users/" + username + "/statistics?per_page=30";
-  return axios.get(url);
+  return axios.get("/users/" + username + "/statistics");
 };
 
 // Collections 图集
 // List collections 图集一览
-export const getCollectionsApi = () => {
-  return axios.get(BASE_URL + "collections");
+export const getCollectionsApi = (query?: Query) => {
+  return axios.get("/collections", { params: query });
 };
 
 // Get a collection 获取图集信息
 export const getCollectionApi = (id: string) => {
-  const url = BASE_URL + "collections/" + id;
-  return axios.get(url);
+  return axios.get("/collections/" + id);
 };
 // Get a collection’s photos 获取该图集下所有图片
-export const getCollectionPhotosApi = (id: string) => {
-  const url = BASE_URL + "collections/" + id + "/photos?per_page=30";
-  return axios.get(url);
+export const getCollectionPhotosApi = (id: string, query?: Query) => {
+  return axios.get("/collections/" + id + "/collections", { params: query });
 };
 // List a collection’s related collections 获取该图集相关联图集
 export const getCollectionRelatedApi = (id: string) => {
-  const url = BASE_URL + "collections/" + id + "/related";
-  return axios.get(url);
+  return axios.get("/collections/" + id + "/related");
 };
 // Create a new collection 新增图集
 // Update an existing collection 更新现存图集
@@ -100,43 +109,22 @@ export const getCollectionRelatedApi = (id: string) => {
 // Remove a photo from a collection 从图集删除图片
 
 // Search
-
-// const searchConfig = {
-//   headers: {
-//     Authorization: "Client-ID" + ` ${ACCESS_KEY}`,
-//   },
-//   params: {
-//     perPage: 30,
-//     page: 1,
-//   },
-// };
-
-interface SearchParams {
-  query: string;
-  per_page?: number;
-  page?: number;
-}
-
-export const searchAllApi = (searchParams: SearchParams) => {
-  return axios.get(BASE_URL + "search?", {
-    params: searchParams,
-  });
+// Search All
+export const searchAllApi = (query?: Query) => {
+  return axios.get("/search", { params: query });
 };
 
-export const searchPhotosApi = (searchParams: SearchParams) => {
-  return axios.get(BASE_URL + "search/photos?", {
-    params: searchParams,
-  });
+// Search photos
+export const searchPhotosApi = (query?: Query) => {
+  return axios.get("/search/photos", { params: query });
 };
 
-export const searchCollectionsApi = (searchParams: SearchParams) => {
-  return axios.get(BASE_URL + "search/collections?", {
-    params: searchParams,
-  });
+// Search collections
+export const searchCollectionsApi = (query?: Query) => {
+  return axios.get("/search/collections", { params: query });
 };
 
-export const searchUsersApi = (searchParams: SearchParams) => {
-  return axios.get(BASE_URL + "search/users?", {
-    params: searchParams,
-  });
+// Search users
+export const searchUsersApi = (query?: Query) => {
+  return axios.get("/search/users", { params: query });
 };

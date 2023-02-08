@@ -9,6 +9,7 @@ import type { Photo } from "@/types/unsplashTypes";
 import PhotoCard from "@/components/PhotoCard.vue";
 import PhotoInfoChartCard from "@/components/PhotoInfoChartCard.vue";
 import CollectionCard from "@/components/CollectionCard.vue";
+import { getPhotoRelatedApi, getPhotoApi } from "@/api/unsplashApi";
 
 // Props
 const props = defineProps({
@@ -19,29 +20,14 @@ const props = defineProps({
   },
 });
 
-const photoDetailParam = reactive({
-  url: BASE_URL + "search/photos?",
-  accessKey: ACCESS_KEY,
-  id: "",
-});
-
-const photoUrl = computed(() => {
-  return BASE_URL + "photos/" + props.photoId;
-});
-
-const photoRelatedUrl = computed(() => {
-  return BASE_URL + "photos/" + props.photoId + "/related";
-});
-
 const photo = ref<Photo>();
 const relatedPhotos = ref<Photo[]>([]);
-
 const isLoading = ref(false);
 
 const initData = async () => {
   isLoading.value = true;
-  const photoResponse = await axios.get(photoUrl.value);
-  const relatedResponse = await axios.get(photoRelatedUrl.value);
+  const photoResponse = await getPhotoApi(props.photoId);
+  const relatedResponse = await getPhotoRelatedApi(props.photoId);
   photo.value = photoResponse.data;
   relatedPhotos.value = relatedResponse.data.results;
   isLoading.value = false;

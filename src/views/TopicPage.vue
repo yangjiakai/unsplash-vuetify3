@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import {
   getTopicsApi,
-  getATopicApi,
+  getTopicApi,
   getTopicPhotosApi,
 } from "@/api/unsplashApi";
 import type { Topic, Photo } from "@/types/unsplashTypes";
@@ -27,7 +27,7 @@ const initData = async () => {
   const photosResponse = await getTopicPhotosApi(slug.value);
   topicPhotos.value = photosResponse.data;
 
-  const bannerResponse = await getATopicApi(slug.value);
+  const bannerResponse = await getTopicApi(slug.value);
   banner.value = bannerResponse.data;
 
   console.log(banner.value);
