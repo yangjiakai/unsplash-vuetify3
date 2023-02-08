@@ -9,7 +9,6 @@ import { getPhotoStatisticsApi } from "@/api/unsplashApi";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart } from "echarts/charts";
-
 import {
   GridComponent,
   LegendComponent,
@@ -17,7 +16,6 @@ import {
   TooltipComponent,
 } from "echarts/components";
 import type { ChartData, Photo } from "../types/unsplashTypes";
-import { BASE_URL } from "../config/unsplashConfig";
 
 const props = defineProps<{
   photo: Photo;
@@ -33,10 +31,6 @@ use([
 ]);
 
 const isLoading = ref(false);
-const photoStatisticsUrl = computed(() => {
-  return `${BASE_URL}photos/${props.photo.id}/statistics`;
-});
-
 const photoStatistics = ref(null);
 const downloadsData = ref([]);
 const downloadsTotal = ref<number | string>("");
@@ -104,7 +98,7 @@ const chartOptions = computed(() => {
 
 const initData = async () => {
   isLoading.value = true;
-  const photoStatisticsResponse = await axios.get(photoStatisticsUrl.value);
+  const photoStatisticsResponse = await getPhotoStatisticsApi(props.photo.id);
   photoStatistics.value = photoStatisticsResponse.data;
 
   xAxis.value = photoStatisticsResponse.data.downloads.historical.values.map(

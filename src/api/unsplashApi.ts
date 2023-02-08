@@ -59,28 +59,33 @@ export const getTopicPhotosApi = (
 };
 
 // Get a user
-export const getUserApi = (username: string) => {
+export const getUserApi = (username: string | string[]) => {
   return axios.get("/users/" + username);
 };
 // Get a user’s portfolio
-export const getUserPortfolioApi = (username: string) => {
+export const getUserPortfolioApi = (username: string | string[]) => {
   return axios.get("/users/" + username + "/portfolio");
 };
 // List a user’s photos
-export const getUserPhotosApi = (username: string, query?: Query) => {
+export const getUserPhotosApi = (
+  username: string | string[],
+  query?: Query
+) => {
   return axios.get("/users/" + username + "/photos", { params: query });
 };
-
 // List a user’s liked photos
-export const getUserLikesApi = (username: string, query?: Query) => {
+export const getUserLikesApi = (username: string | string[], query?: Query) => {
   return axios.get("/users/" + username + "/likes", { params: query });
 };
 // List a user’s collections
-export const getUserCollectionsApi = (username: string, query?: Query) => {
+export const getUserCollectionsApi = (
+  username: string | string[],
+  query?: Query
+) => {
   return axios.get("/users/" + username + "/collections", { params: query });
 };
 // Get a user’s statistics
-export const getUserStatisticsApi = (username: string) => {
+export const getUserStatisticsApi = (username: string | string[]) => {
   return axios.get("/users/" + username + "/statistics");
 };
 
@@ -91,15 +96,18 @@ export const getCollectionsApi = (query?: Query) => {
 };
 
 // Get a collection 获取图集信息
-export const getCollectionApi = (id: string) => {
+export const getCollectionApi = (id: string | string[]) => {
   return axios.get("/collections/" + id);
 };
 // Get a collection’s photos 获取该图集下所有图片
-export const getCollectionPhotosApi = (id: string, query?: Query) => {
+export const getCollectionPhotosApi = (
+  id: string | string[],
+  query?: Query
+) => {
   return axios.get("/collections/" + id + "/collections", { params: query });
 };
 // List a collection’s related collections 获取该图集相关联图集
-export const getCollectionRelatedApi = (id: string) => {
+export const getCollectionRelatedApi = (id: string | string[]) => {
   return axios.get("/collections/" + id + "/related");
 };
 // Create a new collection 新增图集

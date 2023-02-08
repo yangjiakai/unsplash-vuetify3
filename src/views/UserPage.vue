@@ -10,6 +10,14 @@ import { useUnsplashStore } from "@/stores/unsplashStore";
 import PhotoCard from "@/components/PhotoCard.vue";
 import CollectionCard from "@/components/CollectionCard.vue";
 import type { Photo, Collection, User } from "@/types/unsplashTypes";
+import {
+  getUserApi,
+  getUserPhotosApi,
+  getUserLikesApi,
+  getUserCollectionsApi,
+  getUserStatisticsApi,
+  getUserPortfolioApi,
+} from "@/api/unsplashApi";
 const unsplashStore = useUnsplashStore();
 const route = useRoute();
 const userProfileUrl = computed(() => {
@@ -38,10 +46,12 @@ const isLoading = ref(false);
 
 const initData = async () => {
   isLoading.value = true;
-  const userProfileResponse = await axios.get(userProfileUrl.value);
-  const userPhotosResponse = await axios.get(userPhotosUrl.value);
-  const userLikesResponse = await axios.get(userLikesUrl.value);
-  const userCollectionsResponse = await axios.get(userCollectionsUrl.value);
+  const userProfileResponse = await getUserApi(route.params.username);
+  const userPhotosResponse = await getUserPhotosApi(route.params.username);
+  const userLikesResponse = await getUserLikesApi(route.params.username);
+  const userCollectionsResponse = await getUserCollectionsApi(
+    route.params.username
+  );
   userPhotosData.value = userPhotosResponse.data;
   userProfileData.value = userProfileResponse.data;
   userLikesData.value = userLikesResponse.data;
