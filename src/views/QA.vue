@@ -51,15 +51,32 @@ const sendMessage = async (message: string) => {
   currentMessage = createMessage(bot.value, "让我想想,请稍等......");
   chatStore.addToHistory(currentMessage);
   // 请求补全
+
   const response = await generateApi(message);
   const answer = response.data.choices[0].text;
   // 等待AI结束
   chatStore.removeLatestMessage();
-  // 回答问题
-  if (answer && answer != "") {
-    currentMessage = createMessage(bot.value, answer);
-    chatStore.addToHistory(currentMessage);
+  if (response.data.error) {
+    console.log(response.data.error);
+  } else {
+    // 回答问题
+    if (answer && answer != "") {
+      currentMessage = createMessage(bot.value, answer);
+      chatStore.addToHistory(currentMessage);
+    }
+    scrollToBottom();
   }
+};
+
+const refMessages = ref();
+const refPage = ref();
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    // 滚动到最底部
+    console.log(refMessages.value.scrollTop);
+    console.log(refMessages.value.scrollHeight);
+  });
 };
 
 onMounted(() => {
@@ -79,13 +96,13 @@ onMounted(() => {
       <v-icon>mdi-account-group-outline</v-icon>
     </v-btn>
     <v-btn class="mx-1" icon>
-      <v-icon>mdi-account-group-outline</v-icon>
+      <v-icon @click="scrollToBottom">mdi-account-group-outline</v-icon>
     </v-btn>
   </v-app-bar>
 
   <!-- channel messages -->
-  <div class="channel-page">
-    <div id="messages" ref="messages" class="messages mx-2">
+  <div ref="refMessages" class="channel-page">
+    <div id="messages" ref="refMessages" class="messages px-5">
       <transition-group name="list">
         <channel-message
           v-for="message in chatStore.chatHistory"
@@ -127,7 +144,7 @@ onMounted(() => {
 
 .channel-page {
   position: relative;
-  height: 100% !important;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-repeat: repeat;
@@ -139,10 +156,8 @@ onMounted(() => {
   .messages {
     flex-grow: 1;
     margin-bottom: 68px;
-    overflow-x: none;
-    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    min-height: 0;
+    overflow-y: scroll;
   }
 
   .input-box {
