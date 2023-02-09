@@ -5,14 +5,22 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+//
 export const generateApi: any = (keyword: string) => {
   return openai.createCompletion({
     model: "text-davinci-003",
     // prompt: generatePrompt(keyword),
     prompt: keyword,
     temperature: 0.6,
+    max_tokens: 100,
   });
 };
+
+// openai.listModels
+// https://platform.openai.com/docs/api-reference/models/list
+
+// openai.retrieveModel
+// GET https://api.openai.com/v1/models/{model}
 
 function generatePrompt(animal: string) {
   const capitalizedAnimal =
@@ -26,3 +34,12 @@ function generatePrompt(animal: string) {
   Animal: ${capitalizedAnimal}
   Names:`;
 }
+
+export const createImageApi: any = () => {
+  return openai.createImage({
+    prompt:
+      "Football club logo. Flat design. Modern. Energetic. Blue and green. White/black stroke.",
+    n: 1,
+    size: "1024x1024",
+  });
+};

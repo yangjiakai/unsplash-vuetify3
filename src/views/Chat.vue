@@ -67,6 +67,7 @@ const user = ref({
       <v-list density="compact" nav>
         <v-list-item
           color="primary"
+          class="text-font-weight"
           v-for="item in channels"
           :prepend-icon="item.icon"
           :title="item.title"
