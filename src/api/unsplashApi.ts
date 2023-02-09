@@ -1,4 +1,5 @@
-import { BASE_URL, ACCESS_KEY } from "@/config/unsplashConfig";
+const BASE_URL = "https://api.unsplash.com";
+const ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 axios.defaults.headers["Authorization"] = "Client-ID" + " " + ACCESS_KEY;

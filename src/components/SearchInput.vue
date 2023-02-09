@@ -4,7 +4,6 @@
 * @Description: 
 -->
 <script setup lang="ts">
-import { BASE_URL } from "../config/unsplashConfig";
 import { useFocusWithin } from "@vueuse/core";
 import { useUnsplashStore } from "../stores/unsplashStore";
 import SearchPanel from "../components/SearchPanel.vue";
@@ -80,10 +79,6 @@ const states = ref([
   "Wisconsin",
   "Wyoming",
 ]);
-
-const photoStatisticsUrl = computed(() => {
-  return `${BASE_URL}topics/${unsplashStore.searchKey}`;
-});
 
 // 监听检索关键词变化，为空时相似关键词列表清空，且显示检索面板，否则显示关键词列表
 watch(

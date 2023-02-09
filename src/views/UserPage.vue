@@ -4,8 +4,6 @@
 * @Description: Page Of User 
 -->
 <script setup lang="ts">
-import { BASE_URL } from "@/config/unsplashConfig";
-import axios from "axios";
 import { useUnsplashStore } from "@/stores/unsplashStore";
 import PhotoCard from "@/components/PhotoCard.vue";
 import CollectionCard from "@/components/CollectionCard.vue";
