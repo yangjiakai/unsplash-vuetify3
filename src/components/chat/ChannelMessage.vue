@@ -35,23 +35,16 @@ onMounted(() => {});
     </v-avatar>
 
     <div class="mx-2">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-card
-            class="pa-1"
-            :class="{ 'bg-primary': isOwnMessage }"
-            :dark="isOwnMessage"
-            v-bind="attrs"
-            v-on="on"
-          >
-            <div class="font-weight-bold pa-2">
-              {{ message.text }}
-              <span class="text-red">{{ message.user.name }}</span>
-            </div>
-          </v-card>
-        </template>
-        <span>{{ message.timestamp }}</span>
-      </v-tooltip>
+      <v-card
+        class="pa-1"
+        :class="{ 'bg-primary': isOwnMessage }"
+        :dark="isOwnMessage"
+      >
+        <div class="font-weight-bold pa-2">
+          {{ message.text }}
+          <span class="text-red">{{ message.user.name }}</span>
+        </div>
+      </v-card>
     </div>
   </div>
 </template>

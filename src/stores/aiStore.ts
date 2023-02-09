@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 export const useAiStore = defineStore({
-  id: "upsplash",
+  id: "ai",
   state: () => ({
     isSideBarShow: ref(false),
   }),

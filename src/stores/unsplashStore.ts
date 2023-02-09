@@ -8,6 +8,11 @@ export const useUnsplashStore = defineStore({
     recentSearchList: ref<string[]>(["blue", "red", "green", "wall"]),
     searchKey: ref(""),
     searchResult: ref(),
+    snackbar: reactive({
+      isShow: false,
+      timeout: 1000,
+      text: "",
+    }),
   }),
 
   persist: {

@@ -5,19 +5,20 @@
 -->
 <script setup lang="ts">
 // Demo messages and users
-import { users, getMessage } from "./content/messages";
 import ChannelMessage from "@/components/chat/ChannelMessage.vue";
 import InputBox from "@/components/chat/InputBox.vue";
 import { useAiStore } from "@/stores/aiStore";
+import { useChatStore } from "@/stores/chatStore";
 import { generateApi } from "@/api/openAIApi";
+import type { User, Message } from "@/types/chatTypes";
 const aiStore = useAiStore();
-
+const chatStore = useChatStore();
 const route = useRoute();
 const messages = ref<any[]>([]);
 
-const user = ref({
+const you = ref({
   id: 1,
-  name: "YANG",
+  name: "YOU",
   avatar: "https://avatars.githubusercontent.com/u/35951244?v=4",
 });
 
@@ -28,38 +29,41 @@ const bot = ref({
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwrAiMevuwrbU9o0Ck2paVf4ufHUDb2dU48MEDrAlrQw&s",
 });
 
-const cusers = ref<any[]>([user.value, ...users]);
-const startChannel = () => {
-  messages.value = [];
-  messages.value.push(getMessage(bot.value));
-  messages.value.push(getMessage(user.value));
-  messages.value.push(getMessage(bot.value));
-  messages.value.push(getMessage(user.value));
+// 初期显示
+const startChannel = () => {};
+
+const createMessage = (user: User, text: string) => {
+  const message: Message = {
+    id: "_" + Math.random().toString(36).substring(2, 11),
+    user,
+    text,
+    timestamp: new Date().getTime(),
+  };
+  return message;
 };
 
 const sendMessage = async (message: string) => {
-  messages.value.push({
-    id: "_" + Math.random().toString(36).substr(2, 9),
-    user: user.value,
-    text: message,
-    timestamp: new Date().getTime(),
-  });
+  // 发送问题
+  let currentMessage = createMessage(you.value, message);
+  chatStore.addToHistory(currentMessage);
 
+  // 等待AI开始
+  currentMessage = createMessage(bot.value, "让我想想,请稍等......");
+  chatStore.addToHistory(currentMessage);
+  // 请求补全
   const response = await generateApi(message);
   const answer = response.data.choices[0].text;
-
-  messages.value.push({
-    id: "_" + Math.random().toString(36).substr(2, 9),
-    user: bot.value,
-    text: answer,
-    timestamp: new Date().getTime(),
-  });
+  // 等待AI结束
+  chatStore.removeLatestMessage();
+  // 回答问题
+  if (answer && answer != "") {
+    currentMessage = createMessage(bot.value, answer);
+    chatStore.addToHistory(currentMessage);
+  }
 };
 
 onMounted(() => {
   startChannel();
-  console.log("-----");
-  console.log(messages.value);
 });
 </script>
 
@@ -71,10 +75,10 @@ onMounted(() => {
 
     <v-spacer></v-spacer>
 
-    <v-btn class="mx-1" icon @click="messages.push(getMessage())">
+    <v-btn class="mx-1" icon>
       <v-icon>mdi-account-group-outline</v-icon>
     </v-btn>
-    <v-btn class="mx-1" icon @click="messages.push(getMessage(user))">
+    <v-btn class="mx-1" icon>
       <v-icon>mdi-account-group-outline</v-icon>
     </v-btn>
   </v-app-bar>
@@ -84,10 +88,10 @@ onMounted(() => {
     <div id="messages" ref="messages" class="messages mx-2">
       <transition-group name="list">
         <channel-message
-          v-for="message in messages"
+          v-for="message in chatStore.chatHistory"
           :key="message.id"
           :message="message"
-          :user="user"
+          :user="you"
           class="my-4 d-flex"
         />
       </transition-group>
@@ -99,7 +103,7 @@ onMounted(() => {
       "
       class="input-box pa-2"
     >
-      <input-box channel="QA" @send-message="sendMessage" />
+      <input-box channel="QA" @sendMessage="sendMessage" />
     </v-card>
   </div>
 </template>

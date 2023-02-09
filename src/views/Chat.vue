@@ -43,11 +43,6 @@ const channels = ref([
     active: false,
   },
 ]);
-const user = ref({
-  id: 12,
-  name: "John Cena",
-  avatar: "/images/avatars/avatar1.svg",
-});
 </script>
 
 <template>
@@ -55,7 +50,6 @@ const user = ref({
     <v-navigation-drawer
       floating
       permanent
-      v-model="aiStore.isSideBarShow"
       elevation="1"
       class="rounded"
       width="240"
@@ -86,10 +80,7 @@ const user = ref({
     <!-- channel view -->
 
     <v-sheet width="100%" height="100%" color="blue">
-      <router-view
-        :user="user"
-        @toggle-menu="aiStore.isSideBarShow = !aiStore.isSideBarShow"
-      ></router-view>
+      <router-view></router-view>
     </v-sheet>
   </div>
 </template>
