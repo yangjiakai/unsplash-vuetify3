@@ -10,7 +10,7 @@ axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
 const speechApi = axios.create({
   baseURL: "https://texttospeech.googleapis.com",
   headers: {
-    apiKey: "AIzaSyBSXdAvIZX5n_bj4KsqSjJf1W-_TfCntvk",
+    apiKey: "APIKEY",
   },
 });
 
