@@ -58,6 +58,14 @@ const router = createRouter({
         import(/* webpackChunkName: "unsplash-ai" */ "@/views/AI.vue"),
     },
     {
+      path: "/textToSpeech",
+      name: "textToSpeech",
+      component: () =>
+        import(
+          /* webpackChunkName: "unsplash-textToSpeech" */ "@/views/TextToSpeech.vue"
+        ),
+    },
+    {
       path: "/chat",
       name: "chat",
       component: () =>

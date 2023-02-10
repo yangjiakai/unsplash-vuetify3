@@ -5,6 +5,7 @@
 -->
 <script setup lang="ts">
 import { generateApi, createImageApi } from "@/api/openAIApi";
+
 const animalData = ref();
 const animalName = ref("");
 
