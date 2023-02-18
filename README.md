@@ -1,52 +1,60 @@
-# unsplash-vuetify3
+<p align='center' style="margin-top:80px">
+  <img src='/src/assets/logo.svg' alt='Vitesse - Opinionated Vite Starter Template' width='200'/>
+</p>
 
-This template should help get you started developing with Vue 3 in Vite.
+<h6 align='center'>
+<a href="https://cool-daifuku-5ec982.netlify.app/">Live Demo</a>
+</h6>
 
-## Recommended IDE Setup
+<br>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<p align='center'>
+<b>English</b> | <a href="https://github.com/yangjiakai/vuetify3-screenStyler/blob/master/README.zh-CN.md">简体中文</a>| <a href="https://github.com/yangjiakai/vuetify3-screenStyler/blob/master/README.jp.md">日本語</a>
+</p>
 
-## Type Support for `.vue` Imports in TS
+## Introduction
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Developing a full-platform gallery app that imitates the Unsplash website, all API calls are made to the official Unsplash API.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Features
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- ⚡️ [Vue 3](https://github.com/vuejs/core)
+- ⚡️ [Vite](https://github.com/vitejs/vite)
+- ⚡️ UI Framework [Vuetify 3](https://next.vuetifyjs.com/en/)
+- ⚡️ TypeScript
+- 📦 Component Auto Importing
+- 🍍 [Pinia](https://pinia.vuejs.org/)
+- 🍍 pinia-plugin-persist for state persisting
+- ⚡️ `<script setup>`
+- ⚡️ Use icons from any icon sets in [Iconify](https://icon-sets.iconify.design/)
+- ☁️ Deploy on Netlify, zero-config
+- ☁️ Responsive multi-platform adaptive
+- ⚡️ Internationalization (i18n)
+- ⚡️ Dark Light mode
+- ⚡️ Themecolor change
+- ⚡️ Vue3-perfect-scrollbar
+  <br>
 
-## Customize configuration
+## Try it now!
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
 ```
+https://github.com/yangjiakai/vuetify3-screenStyler.git
 
-### Compile and Hot-Reload for Development
+cd vuetify3-screenStyler
 
-```sh
+npm install
+
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## Api requests
 
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+> regarding API requests, my example uses the unsplash API.
+>
+> You need to go to the unsplash developer platform and apply for your own `ACCESS_KEY`.
+>
+> https://unsplash.com/oauth/applications
+>
+> Then, create a new `.env.local` file locally.
+>
+> Add `VITE_UNSPLASH_ACCESS_KEY = your own Access Key`
