@@ -51,12 +51,7 @@ const router = createRouter({
           /* webpackChunkName: "app-unsplash" */ "@/views/UnsplashApp.vue"
         ),
     },
-    {
-      path: "/ai",
-      name: "ai",
-      component: () =>
-        import(/* webpackChunkName: "unsplash-ai" */ "@/views/AI.vue"),
-    },
+
     {
       path: "/textToSpeech",
       name: "textToSpeech",
@@ -64,24 +59,6 @@ const router = createRouter({
         import(
           /* webpackChunkName: "unsplash-textToSpeech" */ "@/views/TextToSpeech.vue"
         ),
-    },
-    {
-      path: "/chat",
-      name: "chat",
-      component: () =>
-        import(/* webpackChunkName: "unsplash-chat" */ "@/views/Chat.vue"),
-      children: [
-        {
-          path: "/chat",
-          redirect: "/chat/channel/qa",
-        },
-        {
-          path: "/chat/channel/qa",
-          name: "apps-qa-channel",
-          component: () =>
-            import(/* webpackChunkName: "apps-qa-channel" */ "@/views/QA.vue"),
-        },
-      ],
     },
   ],
 });
