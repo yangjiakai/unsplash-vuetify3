@@ -4,7 +4,6 @@
 * @Description: 
 -->
 <script setup lang="ts">
-import { BASE_URL, ACCESS_KEY } from "@/config/unsplashConfig";
 import type { Photo } from "@/types/unsplashTypes";
 import PhotoCard from "@/components/PhotoCard.vue";
 import PhotoInfoChartCard from "@/components/PhotoInfoChartCard.vue";

@@ -14,7 +14,7 @@
 
 ## 序文
 
-模仿 Unsplash 官网开发 的全端图库 app，调用的全是 Unsplash 官方的接口
+模仿 Unsplash 官网开发 的全平台图库 app，调用的全是 Unsplash 官方的接口
 
 ## 特性
 
