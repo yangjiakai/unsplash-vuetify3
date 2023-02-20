@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import type { Photo } from "@/types/unsplashTypes";
 import PhotoCard from "@/components/PhotoCard.vue";
-import PhotoInfoChartCard from "@/components/PhotoInfoChartCard.vue";
+// import PhotoInfoChartCard from "@/components/PhotoInfoChartCard.vue";
 import CollectionCard from "@/components/CollectionCard.vue";
 import { getPhotoRelatedApi, getPhotoApi } from "@/api/unsplashApi";
 
@@ -130,7 +130,7 @@ initData();
                 </v-card>
               </v-col>
               <v-col cols="12" md="6">
-                <PhotoInfoChartCard :photo="photo"> </PhotoInfoChartCard>
+                <!-- <PhotoInfoChartCard :photo="photo"> </PhotoInfoChartCard> -->
               </v-col>
             </v-row>
           </div>
